@@ -1,0 +1,13 @@
+# Ignorar archivos de configuración
+config.json
+
+# Ignorar directorios generados automáticamente
+node_modules/
+
+# Ignorar archivos temporales
+*.log
+*.tmp
+
+# Ignorar archivos específicos del sistema operativo
+.DS_Store
+Thumbs.db
