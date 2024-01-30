@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "title": "Lavadora",
+    "description": "lavadora tres velocidades",
+    "price": 19.99,
+    "img": "sin imagen",
+    "code": "P001",
+    "stock": 50,
+    "category": "Electrónicos",
+    "status": true,
+    "thumbnails": []
+  },
+  {
+    "id": 2,
+    "title": "Gorra",
+    "description": "azul con rayas verticales",
+    "price": 29.99,
+    "img": "sin imagen",
+    "code": "P002",
+    "stock": 30,
+    "category": "Ropa",
+    "status": true,
+    "thumbnails": []
+  },
+  {
+    "id": 3,
+    "title": "Cortinas",
+    "description": "color beige, 2.30 mts",
+    "price": 39.99,
+    "img": "sin imagen",
+    "code": "P003",
+    "stock": 25,
+    "category": "Hogar",
+    "status": true,
+    "thumbnails": []
+  },
+  {
+    "id": 4,
+    "title": "Carro control remoto",
+    "description": "No incluye baterias",
+    "price": 49.99,
+    "img": "sin imagen",
+    "code": "P004",
+    "stock": 40,
+    "category": "Juguetes",
+    "status": true,
+    "thumbnails": []
+  },
+  {
+    "id": 5,
+    "title": "Deja de ser tu",
+    "description": "Autor: Joe Dispenza",
+    "price": 59.99,
+    "img": "sin imagen",
+    "code": "P005",
+    "stock": 20,
+    "category": "Libros",
+    "status": true,
+    "thumbnails": []
+  },
+  {
+    "id": 6,
+    "title": "Balón",
+    "description": "futsala",
+    "price": 69.99,
+    "img": "sin imagen",
+    "code": "P006",
+    "stock": 15,
+    "category": "Deportes",
+    "status": true,
+    "thumbnails": []
+  },
+  {
+    "id": 7,
+    "title": "Licuadora",
+    "description": "7 velocidades",
+    "price": 79.99,
+    "img": "sin imagen",
+    "code": "P007",
+    "stock": 35,
+    "category": "Electrodomésticos",
+    "status": true,
+    "thumbnails": []
+  },
+  {
+    "id": 8,
+    "title": "Comedor",
+    "description": "6 puestos",
+    "price": 89.99,
+    "img": "sin imagen",
+    "code": "P008",
+    "stock": 10,
+    "category": "Muebles",
+    "status": true,
+    "thumbnails": []
+  },
+  {
+    "id": 9,
+    "title": "Bloqueador solar",
+    "description": "SPF 60",
+    "price": 99.99,
+    "img": "sin imagen",
+    "code": "P009",
+    "stock": 28,
+    "category": "Salud y Belleza",
+    "status": true,
+    "thumbnails": []
+  },
+  {
+    "id": 10,
+    "title": "Crema hidratante",
+    "description": "con ácido hialurónico",
+    "price": 109.99,
+    "img": "sin imagen",
+    "code": "P010",
+    "stock": 18,
+    "category": "Salud y Belleza",
+    "status": true,
+    "thumbnails": []
+  }
+]
