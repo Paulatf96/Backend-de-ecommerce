@@ -16,7 +16,6 @@ class ProductManager {
           item.title &&
           item.description &&
           item.price &&
-          item.thumbnails &&
           item.stock &&
           item.status &&
           item.category
