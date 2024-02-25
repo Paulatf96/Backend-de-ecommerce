@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
 
-const ProductManager = require("../controllers/productManager.js");
-const productManager = new ProductManager("./src/models/productos.json");
+
+const ProductManager = require("../controllers/productManagerDB.js");
+const productManager = new ProductManager();
 
 router.get("/", async (req, res) => {
   try {
@@ -24,4 +24,12 @@ router.get("/realtimeproducts", async (req, res) => {
   }
 });
 
+router.get("/chatOnline", async (req,res) =>{
+  try {
+    res.render("chatOnline")
+  } catch (error) {
+    console.log("Ha ocurrido un error", error)
+    res.status(500).json({error:"Error interno del servidor"})
+  }
+})
 module.exports = router;

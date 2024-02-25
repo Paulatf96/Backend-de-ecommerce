@@ -78,15 +78,14 @@ class ProductManager {
   }
 
   async deleteProduct(id) {
+    console.log(id);
     try {
       const deleteProduct = await ProductModel.findByIdAndDelete(id);
-
       if (!deleteProduct) {
         console.log("El producto no existe");
         return null;
       }
       console.log("Producto eliminado con éxito");
-      return deleteProduct;
     } catch (error) {
       console.log("Error al eliminar el producto", error);
     }

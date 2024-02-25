@@ -31,8 +31,11 @@ app.use("/", viewsRouter);
 
 const io = socket(httpServer);
 
-const ProductManager = require("./controllers/productManager.js");
-const productManager = new ProductManager("./src/models/productos.json");
+const ProductManager = require("./controllers/productManagerDB.js");
+const productManager = new ProductManager();
+
+const MessageManager = require("./controllers/messagesManagerDB.js");
+const messageManager = new MessageManager();
 
 io.on("connection", async (socket) => {
   console.log("Cliente conectado");
@@ -40,11 +43,18 @@ io.on("connection", async (socket) => {
 
   socket.on("delete", async (id) => {
     await productManager.deleteProduct(id);
-    socket.emit("productos", await productManager.getProducts());
+    socket.emit("products", await productManager.getProducts());
   });
 
   socket.on("addProduct", async (data) => {
     await productManager.addProduct(data);
-    socket.emit("productos", await productManager.getProducts());
+    socket.emit("products", await productManager.getProducts());
+  });
+
+  socket.emit("saveMessages", await messageManager.getMessages());
+
+  socket.on("addMessage", async (newMessage) => {
+    await messageManager.addMessages(newMessage);
+    socket.emit("saveMessages", await messageManager.getMessages());
   });
 });
