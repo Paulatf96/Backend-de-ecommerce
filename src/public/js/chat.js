@@ -6,15 +6,7 @@ socket.on("saveMessages", (data) => {
   document.getElementById("sendMessageButton").addEventListener("click", () => {
     sendMessage();
   });
-  // document.getElementById("email").addEventListener("change", (e) => {
-  //   addUser(e.target.value);
-  // });
-  
-  // const addUser = (user) => {
-  //   document.getElementById("sendMessageButton").addEventListener("click", () => {
-  //     sendMessage(user);
-  //   });
-  // };
+
   
   const sendMessage = () => {
     let inputUser = document.getElementById("email");
@@ -40,6 +32,7 @@ socket.on("saveMessages", (data) => {
   
     messages.forEach((message) => {
       const card = document.createElement("div");
+      card.classList.add("user-message")
       card.innerHTML = `
       <p>${message.user}</p>
       <p>${message.message}</p>
