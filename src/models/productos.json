@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "title": "Lavadora",
     "description": "lavadora tres velocidades",
     "price": 19.99,
@@ -12,7 +11,6 @@
     "thumbnails": []
   },
   {
-    "id": 2,
     "title": "Gorra",
     "description": "azul con rayas verticales",
     "price": 29.99,
@@ -24,7 +22,6 @@
     "thumbnails": []
   },
   {
-    "id": 3,
     "title": "Cortinas",
     "description": "color beige, 2.30 mts",
     "price": 39.99,
@@ -36,7 +33,6 @@
     "thumbnails": []
   },
   {
-    "id": 4,
     "title": "Carro control remoto",
     "description": "No incluye baterias",
     "price": 49.99,
@@ -48,7 +44,6 @@
     "thumbnails": []
   },
   {
-    "id": 5,
     "title": "El olvido que seremos",
     "description": "Obra de Hector Faciolince",
     "price": 69.99,
@@ -60,7 +55,6 @@
     "thumbnails": []
   },
   {
-    "id": 6,
     "title": "Balón",
     "description": "futsala",
     "price": 69.99,
@@ -72,7 +66,6 @@
     "thumbnails": []
   },
   {
-    "id": 7,
     "title": "Licuadora",
     "description": "7 velocidades",
     "price": 79.99,
@@ -84,7 +77,6 @@
     "thumbnails": []
   },
   {
-    "id": 8,
     "title": "Comedor",
     "description": "6 puestos",
     "price": 89.99,
@@ -96,7 +88,6 @@
     "thumbnails": []
   },
   {
-    "id": 9,
     "title": "Bloqueador solar",
     "description": "SPF 60",
     "price": 99.99,
@@ -108,7 +99,6 @@
     "thumbnails": []
   },
   {
-    "id": 10,
     "title": "Crema hidratante",
     "description": "con ácido hialurónico",
     "price": 109.99,
