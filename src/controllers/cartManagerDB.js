@@ -30,13 +30,13 @@ class CartManager {
     try {
       const cart = await this.getCartById(cid);
       const existingProduct = cart.products.find(
-        (prod) => prod.id.toString() == pid
+        (prod) => prod._id.toString() == pid
       );
       if (existingProduct) {
         existingProduct.quantity += quantity;
       } else {
         const newProduct = {
-          id: pid,
+          product: pid,
           quantity: quantity,
         };
         cart.products.push(newProduct);

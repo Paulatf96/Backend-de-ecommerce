@@ -33,9 +33,9 @@ router.get("/:id", async (req, res) => {
 router.post("/:cid/products/:pid", async (req, res) => {
   let cid = req.params.cid;
   let pid = req.params.pid;
-  let product = req.body;
+  
   try {
-    await cartManager.addProductToCart(cid, pid, product);
+    await cartManager.addProductToCart(cid, pid);
     res.status(200).json({ message: "Producto agregado correctamente" });
   } catch (error) {
     console.error("Error al agregar el producto al carrito", error);
