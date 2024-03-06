@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-
 const ProductManager = require("../controllers/productManagerDB.js");
+const CartManager = require("../controllers/cartManagerDB.js");
+const cartManager = new CartManager();
 const productManager = new ProductManager();
 
 router.get("/", async (req, res) => {
@@ -24,12 +25,42 @@ router.get("/realtimeproducts", async (req, res) => {
   }
 });
 
-router.get("/chatOnline", async (req,res) =>{
+router.get("/chatOnline", async (req, res) => {
   try {
-    res.render("chatOnline")
+    res.render("chatOnline");
   } catch (error) {
-    console.log("Ha ocurrido un error", error)
-    res.status(500).json({error:"Error interno del servidor"})
+    console.log("Ha ocurrido un error", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
-})
+});
+
+router.get("/products", async (req, res) => {
+  try {
+    const page = req.query.page;
+    const limit = req.query.limit;
+    const products = await productManager.getProducts(limit, page);
+    res.render("products", products);
+  } catch (error) {
+    console.log("Ha ocurrido un error", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+router.get("/carts/:cid", async (req, res) => {
+  try {
+    const cid = req.params.cid;
+    const cart = await cartManager.getCartById(cid);
+    const nuevoArray = cart.products.map((producto) => {
+      const { _id, ...rest } = producto.toObject();
+      return rest;
+    });
+    
+    res.render("carts", {
+      products: nuevoArray,
+    });
+  } catch (error) {
+    console.log("Ha ocurrido un error", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 module.exports = router;

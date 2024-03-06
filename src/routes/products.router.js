@@ -1,30 +1,31 @@
 const express = require("express");
 const router = express.Router();
 const ProductManager = require("../controllers/productManagerDB");
-const path = require("path");
 
 const productManager = new ProductManager();
 
 router.get("/", async (req, res) => {
   try {
-    let limit = req.query.limit;
-    let response = await productManager.getProducts();
-    if (limit) {
-      let resWithLimit = response.slice(0, limit);
-      res.json(resWithLimit);
-    } else {
-      res.json(response);
-    }
+    const { limit, page, sort, category, stock } = req.query;
+    let response = await productManager.getProducts(
+      limit,
+      page,
+      sort,
+      category,
+      stock
+    );
+
+    res.json(response);
   } catch (error) {
     console.error("Error al obtener los productos", error);
-    res.status(500).json({ error: "Error del servidor" });
+    res.status(500).json({ error });
   }
 });
 
 router.get("/:pid", async (req, res) => {
-  let pid = req.params.pid;
   try {
-    let product = await productManager.getProductById(pid);
+    const pid = req.params.pid;
+    const product = await productManager.getProductById(pid);
     if (product) {
       res.json(product);
     } else {
