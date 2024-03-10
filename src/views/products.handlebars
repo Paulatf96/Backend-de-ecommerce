@@ -1,7 +1,13 @@
 <h1>Vista Products</h1>
 
+<p>Bienvenido!, {{user.first_name}} {{user.last_name}}!</p>
+<p>Email: {{user.email}}</p>
+<p>Rol: {{user.rol}}</p>
+<a href="/api/sessions/logout">Cerrar sesión </a>
+
+
 <div id="productsContainer">
-{{#each payload}}
+{{#each products.payload}}
 <div class="card">
     <p>Producto:{{this.title}} </p>
     <p>Precio: {{this.price}}</p>
@@ -14,13 +20,13 @@
 
 </div>
 <div>
-{{#if hasPrevPage}}
-    <a href="/products?page={{prevPage}}"> Anterior </a>
+{{#if products.hasPrevPage}}
+    <a href="/products?page={{products.prevPage}}"> Anterior </a>
 {{/if}}
 
-{{#if hasNextPage}}
-    <a href="/products?page={{nextPage}}"> Siguiente </a>
+{{#if products.hasNextPage}}
+    <a href="/products?page={{products.nextPage}}"> Siguiente </a>
 {{/if}}
 </div>
 
-<p>Pagina {{page}} de {{totalPages}} </p>
+<p>Pagina {{products.page}} de {{products.totalPages}} </p>

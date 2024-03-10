@@ -2,34 +2,40 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 
+const EMAIL_ADMIN = "adminCoder@coder.com";
+const PASSWORD_ADMIN = "adminCod3r123";
 
-router.post("/login", passport.authenticate("login", {failureRedirect: "/api/sessions/faillogin"}), async (req, res) => {
-    console.log("entro aqui 1")
-    if(!req.user) return res.status(400).send({status:"error"});
-    console.log("entro aqui 2")
+router.post(
+  "/login",
+  passport.authenticate("login", {
+    failureRedirect: "/api/sessions/faillogin",
+  }),
+  async (req, res) => {
+    if (!req.user) return res.status(400).send({ status: "error" });
+
     req.session.user = {
-        first_name: req.user.first_name,
-        last_name: req.user.last_name,
-        age: req.user.age,
-        email:req.user.email
+      first_name: req.user.first_name,
+      last_name: req.user.last_name,
+      age: req.user.age,
+      email: req.user.email,
+      rol: req.user.rol,
     };
 
     req.session.login = true;
 
-    res.redirect("/profile");
-
-})
+    res.redirect("/userProducst");
+  }
+);
 
 router.get("/faillogin", async (req, res) => {
-    res.send({error: "Error en loguin"});
-})
-
+  res.send({ error: "Error en loguin" });
+});
 
 router.get("/logout", (req, res) => {
-    if (req.session.login) {
-        req.session.destroy();
-    }
-    res.redirect("/login");
-})
+  if (req.session.login) {
+    req.session.destroy();
+  }
+  res.redirect("/");
+});
 
 module.exports = router;

@@ -6,6 +6,7 @@ const createHash = (password) =>
 const isValidPassword = (password, user) =>
   bcrypt.compareSync(password, user.password);
 
+
 module.exports = {
   createHash,
   isValidPassword,

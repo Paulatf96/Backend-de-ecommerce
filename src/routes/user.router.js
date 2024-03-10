@@ -13,11 +13,12 @@ router.post(
       last_name: req.user.last_name,
       age: req.user.age,
       email: req.user.email,
+      rol: req.user.rol,
     };
 
     req.session.login = true;
 
-    res.redirect("/profile");
+    res.redirect("/userProducst");
   }
 );
 

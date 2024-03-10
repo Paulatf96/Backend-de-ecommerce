@@ -7,15 +7,15 @@ const cartManager = new CartManager();
 const productManager = new ProductManager();
 
 // Rutas productos
-router.get("/", async (req, res) => {
-  try {
-    const products = await productManager.getProducts();
-    res.render("home", { products });
-  } catch (error) {
-    console.log("Ha ocurrio un error", error);
-    res.status(500).json({ error: "error interno del servidor" });
-  }
-});
+// router.get("/", async (req, res) => {
+//   try {
+//     const products = await productManager.getProducts();
+//     res.render("home", { products });
+//   } catch (error) {
+//     console.log("Ha ocurrio un error", error);
+//     res.status(500).json({ error: "error interno del servidor" });
+//   }
+// });
 
 router.get("/realtimeproducts", async (req, res) => {
   try {
@@ -69,9 +69,9 @@ router.get("/carts/:cid", async (req, res) => {
 
 
 // Rutas loguin
-router.get("/login", (req, res) => {
+router.get("/", (req, res) => {
   if (req.session.login) {
-      return res.redirect("/profile");
+      return res.redirect("/userProducst");
   }
   res.render("login");
 });
@@ -79,16 +79,25 @@ router.get("/login", (req, res) => {
 
 router.get("/register", (req, res) => {
   if (req.session.login) {
-      return res.redirect("/profile");
+      return res.redirect("/userProducst");
   }
   res.render("register");
 });
 
-router.get("/profile", (req, res) => {
+router.get("/userProducst", async (req, res) => {
   if (!req.session.login) {
       return res.redirect("/login");
   }
-  res.render("profile", { user: req.session.user });
+
+  try {
+    const page = req.query.page;
+    const limit = req.query.limit;
+    const products = await productManager.getProducts(limit, page);
+    res.render("products", { user: req.session.user, products });
+  } catch (error) {
+    console.log("Ha ocurrido un error", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 });
 
 module.exports = router;
