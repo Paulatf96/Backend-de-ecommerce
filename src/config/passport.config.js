@@ -48,10 +48,6 @@ const initializePassport = () => {
         usernameField: "email",
       },
       async (username, password, done) => {
-        // console.log(username, password);
-        // if (username == "adminCoder@coder.com") {
-        //   return done(null,username) 
-        // }
 
         try {
           const user = await UserModel.findOne({ email: username });
