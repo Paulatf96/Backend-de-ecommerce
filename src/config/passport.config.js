@@ -90,10 +90,10 @@ const initializePassport = () => {
         if(!user) {
             let newUser = {
                 first_name: profile._json.name,
-                last_name: "secreto",
-                age: 37,
+                last_name: " ",
+                age: undefined,
                 email: profile._json.email,
-                password: "secreto"
+                password: " "
             }
             let result = await UserModel.create(newUser);
             done(null, result);
