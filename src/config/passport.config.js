@@ -15,7 +15,7 @@ const initializePassport = () => {
         usernameField: "email",
       },
       async (req, username, password, done) => {
-        const { first_name, last_name, email, age } = req.body;
+        const { first_name, last_name, email, age,rol } = req.body;
 
         try {
           let user = await UserModel.findOne({ email: username });
@@ -28,7 +28,7 @@ const initializePassport = () => {
             last_name,
             email,
             age,
-            rol: "Usuario",
+            rol: rol || "user",
             password: createHash(password),
           };
 
@@ -93,7 +93,8 @@ const initializePassport = () => {
                 last_name: " ",
                 age: undefined,
                 email: profile._json.email,
-                password: " "
+                password: " ",
+                rol: "user"
             }
             let result = await UserModel.create(newUser);
             done(null, result);
