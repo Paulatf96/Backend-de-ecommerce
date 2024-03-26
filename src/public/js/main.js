@@ -1,8 +1,8 @@
 const socket = io();
 
 socket.on("products", (data) => {
-  render(data);
-  console.log(data);
+  render(data.payload);
+  console.log(data.payload);
 });
 
 const render = (products) => {

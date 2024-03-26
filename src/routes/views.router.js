@@ -86,7 +86,7 @@ router.get("/register", (req, res) => {
 
 router.get("/userProducst", async (req, res) => {
   if (!req.session.login) {
-      return res.redirect("/login");
+      return res.redirect("/");
   }
 
   try {
@@ -100,5 +100,4 @@ router.get("/userProducst", async (req, res) => {
   }
 });
 
-module.exports = router;
 module.exports = router;
