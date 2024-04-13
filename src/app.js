@@ -6,6 +6,7 @@ const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const initializePassport = require("./config/passport.config.js");
+const cors = require("cors")
 
 const PUERTO = 8080;
 const path = require("path");
@@ -38,6 +39,7 @@ app.use(
     }),
   })
 );
+app.use(cors())
 
 //Configuración passport
 initializePassport();
