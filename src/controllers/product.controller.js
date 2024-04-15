@@ -1,137 +1,70 @@
-const ProductModel = require("../models/product.model.js");
+const ProductRepository = require("../repositories/product.repository.js");
+const productRepository = new ProductRepository();
 
 class ProductController {
-  async addProduct(item) {
+  async getProducts(req, res) {
     try {
-      if (
-        !item.title ||
-        !item.description ||
-        !item.price ||
-        !item.img ||
-        !item.stock ||
-        !item.status ||
-        !item.category ||
-        !item.code
-      ) {
-        console.log("No se puede agregar el producto, hay un campo vacio");
-        return;
-      }
+      const { limit, page, sort, category, stock } = req.query;
+      let response = await productRepository.getProducts(
+        limit,
+        page,
+        sort,
+        category,
+        stock
+      );
+      res.json(response);
+    } catch (error) {
+      console.error("Error al obtener los productos", error);
+      res.status(500).json({ error: "Error interno del servidor" });
+    }
+  }
 
-      let validation = await ProductModel.findOne({ code: item.code });
-      if (validation) {
-        console.log("Este producto ya existe");
-        return;
+  async getProductById(req, res) {
+    try {
+      const pid = req.params.pid;
+      const product = await productRepository.getProductById(pid);
+      if (product) {
+        res.json(product);
       } else {
-        const newProduct = new ProductModel({
-          title: item.title,
-          description: item.description,
-          price: item.price,
-          img: item.img,
-          code: item.code,
-          stock: item.stock,
-          category: item.category,
-          status: item.status || true,
-          thumbnail: item.thumbnail || [],
-        });
-        await newProduct.save();
+        res.json({ error: "Producto no encontrado" });
       }
     } catch (error) {
-      console.log("Error al agregar el producto", error);
-      throw error;
+      console.error("Error al obtener el producto", error);
+      res.status(500).json({ error: "Error del servidor" });
     }
   }
 
-  async getProducts(limit = 10, page = 1, sort, category, stock) {
-    let parametersSearch = {};
-    let optionsPagination = {
-      limit,
-      page,
-    };
-    if (category) {
-      parametersSearch.category = category;
-    }
-    if (stock) {
-      parametersSearch.stock = { $gte: 1 };
-    }
-    if (sort) {
-      let ordersValue = {
-        "-1": "desc",
-        1: "asc",
-      };
-      optionsPagination.sort = { price: ordersValue[sort] };
-    }
-
-    let paginatedResults;
+  async addProduct(req, res) {
+    let product = req.body;
     try {
-      if (parametersSearch) {
-        paginatedResults = await ProductModel.paginate(
-          parametersSearch,
-          optionsPagination
-        );
-      } else {
-        paginatedResults = await ProductModel.paginate({}, optionsPagination);
-      }
-
-      if (!paginatedResults?.docs.length) {
-        throw new Error("No se encontraron resultados");
-      }
-      const paginatedResultsFinal = paginatedResults.docs.map((product) => {
-        const { ...rest } = product.toObject();
-        return rest;
-      });
-      const productInfo = {
-        status:"success",
-        payload: paginatedResultsFinal,
-        totalPages: paginatedResults.totalPages,
-        prevPage: paginatedResults.prevPage,
-        nextPage: paginatedResults.nextPage,
-        page: paginatedResults.page,
-        hasPrevPage: paginatedResults.hasPrevPage,
-        hasNextPage: paginatedResults.hasNextPage
-      };
-      return productInfo;
+      await productRepository.addProduct(product);
+      res.status(201).json({ message: "Producto agregado correctamente" });
     } catch (error) {
-      console.log("Error al obtener los productos", error);
+      console.error("Error al agregar el producto", error);
+      res.status(500).json({ error: "Error del servidor" });
     }
   }
 
-  async getProductById(id) {
+  async updateProduct(req, res) {
+    let pid = req.params.pid;
+    let product = req.body;
     try {
-      const product = await ProductModel.findById(id);
-      if (!product) {
-        console.log("El producto buscado no existe");
-        return null;
-      }
-      console.log("Producto encontrado");
-      return product;
+      await productRepository.updateProduct(pid, product);
+      res.status(200).json({ message: "Producto actualizado correctamente" });
     } catch (error) {
-      console.log("Error al obtener el producto", error);
+      console.error("Error al actualizar el producto", error);
+      res.status(500).json({ error: "Error del servidor" });
     }
   }
 
-  async updateProduct(id, item) {
+  async deleteProduct (req, res){
+    let pid = req.params.pid;
     try {
-      const updateProduct = await ProductModel.findByIdAndUpdate(id, item);
-      if (!updateProduct) {
-        console.log("Producto no encontrado");
-        return null;
-      }
-      console.log("Producto actualizado");
+      await productRepository.deleteProduct(pid);
+      res.status(200).json({ message: "Producto eliminado correctamente" });
     } catch (error) {
-      console.log("Error al actualizar el producto", error);
-    }
-  }
-
-  async deleteProduct(id) {
-    console.log(id);
-    try {
-      const deleteProduct = await ProductModel.findByIdAndDelete(id);
-      if (!deleteProduct) {
-        throw new Error("No pudimos encontrar el producto");
-      }
-      console.log("Producto eliminado con éxito");
-    } catch (error) {
-      console.log("Error al eliminar el producto", error);
+      console.error("Error al eliminar el producto", error);
+      res.status(500).json({ error: "Error del servidor" });
     }
   }
 }

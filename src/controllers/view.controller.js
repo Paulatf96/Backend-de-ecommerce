@@ -1,5 +1,3 @@
-const ProductController = require("../controllers/product.controller.js");
-const CartController = require("../controllers/cart.controller.js");
 const ProductRepository = require("../repositories/product.repository.js");
 const productRepository = new ProductRepository();
 const CartRepository = require("../repositories/cart.repository.js");
