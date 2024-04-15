@@ -1,6 +1,6 @@
 const ProductModel = require("../models/product.model.js");
 
-class ProductManager {
+class ProductController {
   async addProduct(item) {
     try {
       if (
@@ -136,4 +136,4 @@ class ProductManager {
   }
 }
 
-module.exports = ProductManager;
+module.exports = ProductController;

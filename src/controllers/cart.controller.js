@@ -1,6 +1,6 @@
 const CartModel = require("../models/cart.model.js");
 
-class CartManager {
+class CartController {
   async createCart() {
     try {
       const newCart = new CartModel({
@@ -98,4 +98,4 @@ class CartManager {
   }
 }
 
-module.exports = CartManager;
+module.exports = CartController;

@@ -6,7 +6,7 @@ const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const initializePassport = require("./config/passport.config.js");
-const cors = require("cors")
+const cors = require("cors");
 
 const PUERTO = 8080;
 const path = require("path");
@@ -39,7 +39,7 @@ app.use(
     }),
   })
 );
-app.use(cors())
+app.use(cors());
 
 //Configuración passport
 initializePassport();
@@ -60,10 +60,10 @@ app.use("/", viewsRouter);
 
 const io = socket(httpServer);
 
-const ProductManager = require("./controllers/productManagerDB.js");
+const ProductManager = require("./controllers/productController.js");
 const productManager = new ProductManager();
 
-const MessageManager = require("./controllers/messagesManagerDB.js");
+const MessageManager = require("./controllers/messagesController.js");
 const messageManager = new MessageManager();
 
 io.on("connection", async (socket) => {
