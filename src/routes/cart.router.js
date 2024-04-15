@@ -17,7 +17,7 @@ const {
 //   }
 // });
 
-router.post("/", isLogued(), authUser(), cartController.createCart());
+router.post("/", isLogued, authUser, cartController.createCart.bind(cartController));
 
 // router.get("/:id", async (req, res) => {
 //   let cid = req.params.id;
@@ -33,7 +33,7 @@ router.post("/", isLogued(), authUser(), cartController.createCart());
 //     res.status(500).json({ error: "Error del servidor" });
 //   }
 // });
-router.get("/:cid", isLogued(), authUser(), cartController.getCartById());
+router.get("/:cid", isLogued, authUser, cartController.getCartById.bind(cartController));
 
 // router.post("/:cid/products/:pid", async (req, res) => {
 //   let cid = req.params.cid;
@@ -49,9 +49,9 @@ router.get("/:cid", isLogued(), authUser(), cartController.getCartById());
 // });
 router.post(
   "/:cid/products/:pid",
-  isLogued(),
-  authUser(),
-  cartController.addProductToCart()
+  isLogued,
+  authUser,
+  cartController.addProductToCart.bind(cartController)
 );
 
 // router.delete("/:cid/products/:pid", async (req, res) => {
@@ -67,9 +67,9 @@ router.post(
 
 router.delete(
   "/:cid/products/:pid",
-  isLogued(),
-  authUser(),
-  cartController.deleteProduct()
+  isLogued,
+  authUser,
+  cartController.deleteProduct.bind(cartController)
 );
 
 // router.put("/:cid/products/:pid", async (req, res) => {
@@ -86,9 +86,9 @@ router.delete(
 
 router.put(
   "/:cid/products/:pid",
-  isLogued(),
-  authUser(),
-  cartController.upDateProduct()
+  isLogued,
+  authUser,
+  cartController.upDateProduct.bind(cartController)
 );
 
 // router.delete("/:cid", async (req, res) => {
@@ -103,9 +103,9 @@ router.put(
 
 router.delete(
   "/:cid",
-  isLogued(),
-  authUser(),
-  cartController.deleteAllProducts()
+  isLogued,
+  authUser,
+  cartController.deleteAllProducts.bind(cartController)
 );
 
 module.exports = router;

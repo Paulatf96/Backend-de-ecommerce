@@ -8,6 +8,7 @@ const {
   authAdmin,
   authUser,
   isLogued,
+  isLoggedLogin 
 } = require("../middleware/authentication.middleware.js");
 
 // router.get("/realtimeproducts", async (req, res) => {
@@ -20,9 +21,9 @@ const {
 // });
 router.get(
   "/realtimeproducts",
-  isLogued(),
-  authAdmin(),
-  viewController.renderView()
+  [isLogued,
+  authAdmin],
+  viewController.renderView.bind(viewController)
 );
 
 // router.get("/products", async (req, res) => {
@@ -36,7 +37,7 @@ router.get(
 //     res.status(500).json({ error: "Error interno del servidor" });
 //   }
 // });
-router.get("/products", isLogued(), authUser(), viewController.viewProducts());
+router.get("/products", isLogued, authUser, viewController.viewProducts.bind(viewController));
 
 // Ruta chat
 // router.get("/chatOnline", async (req, res) => {
@@ -47,7 +48,7 @@ router.get("/products", isLogued(), authUser(), viewController.viewProducts());
 //     res.status(500).json({ error: "Error interno del servidor" });
 //   }
 // });
-router.get("/chatOnline", isLogued(), authUser(), viewController.renderView());
+router.get("/chatOnline", isLogued, authUser, viewController.renderView.bind(viewController));
 
 // Ruta Carts
 // router.get("/carts/:cid", async (req, res) => {
@@ -67,7 +68,7 @@ router.get("/chatOnline", isLogued(), authUser(), viewController.renderView());
 //   }
 // });
 
-router.get("/carts/:cid", isLogued(), authUser(), viewController.viewCart());
+router.get("/carts/:cid", isLogued, authUser, viewController.viewCart.bind(viewController));
 
 // Rutas loguin
 // router.get("/", (req, res) => {
@@ -77,7 +78,7 @@ router.get("/carts/:cid", isLogued(), authUser(), viewController.viewCart());
 //   res.render("login");
 // });
 
-router.get("/", isLogued(), viewController.renderView());
+router.get("/", isLoggedLogin , viewController.renderView.bind(viewController));
 
 // router.get("/register", (req, res) => {
 //   if (req.session.login) {
@@ -85,7 +86,7 @@ router.get("/", isLogued(), viewController.renderView());
 //   }
 //   res.render("register");
 // });
-router.get("/register", isLogued(), viewController.renderView());
+router.get("/register", isLogued, viewController.renderView.bind(viewController));
 
 // router.get("/userProducst", async (req, res) => {
 //   if (!req.session.login) {
@@ -105,9 +106,9 @@ router.get("/register", isLogued(), viewController.renderView());
 
 router.get(
   "/userProducst",
-  isLogued(),
-  authUser(),
-  viewController.viewProducts()
+  isLogued,
+  authUser,
+  viewController.viewProducts.bind(viewController)
 );
 
 module.exports = router;

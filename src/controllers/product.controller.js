@@ -3,6 +3,7 @@ const productRepository = new ProductRepository();
 
 class ProductController {
   async getProducts(req, res) {
+
     try {
       const { limit, page, sort, category, stock } = req.query;
       let response = await productRepository.getProducts(

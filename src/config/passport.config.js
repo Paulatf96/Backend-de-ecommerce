@@ -19,7 +19,6 @@ const initializePassport = () => {
       async (req, username, password, done) => {
         try {
           let result = await userRepository.register(
-            { email: username },
             password,
             req
           );

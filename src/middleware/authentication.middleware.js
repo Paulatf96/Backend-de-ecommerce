@@ -15,18 +15,31 @@ function authUser(req, res, next) {
 }
 
 function isLogued(req, res, next) {
-  if (req.session.login) {
-    return next();
-  } else {
+  if (!req.session.login) {
     if (req.url !== "/register") {
       return res.redirect("/");
     } else {
-      return res.redirect("/register");
+      next();
     }
+  } else {
+    if (req.url == "/register") {
+      return res.redirect("/userProducst");
+    } else {
+      return next();
+    }
+  }
+}
+
+function isLoggedLogin(req, res, next) {
+  if (req.session.login) {
+    res.redirect("/userProducst");
+  } else {
+    next();
   }
 }
 module.exports = {
   authAdmin,
   authUser,
   isLogued,
+  isLoggedLogin,
 };

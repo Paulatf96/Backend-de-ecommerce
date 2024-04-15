@@ -1,6 +1,6 @@
 const MessageModel = require("../models/message.model.js");
 
-class MessageManager {
+class MessageController {
   async getMessages() {
     try {
       let allMessages = await MessageModel.find();
@@ -32,4 +32,4 @@ class MessageManager {
   }
 }
 
-module.exports = MessageManager;
+module.exports = MessageController;

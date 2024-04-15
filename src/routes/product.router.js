@@ -26,7 +26,7 @@ const {
 //     res.status(500).json({ error });
 //   }
 // });
-router.get("/", isLogued(), authUser(), productController.getProducts());
+router.get("/", [isLogued, authUser], productController.getProducts.bind(productController));
 
 // router.get("/:pid", async (req, res) => {
 //   try {
@@ -43,7 +43,7 @@ router.get("/", isLogued(), authUser(), productController.getProducts());
 //   }
 // });
 
-router.get("/:pid", isLogued(), authUser(), productController.getProductById());
+router.get("/:pid", [isLogued, authUser], productController.getProductById.bind(productController));
 
 // router.post("/", async (req, res) => {
 //   let product = req.body;
@@ -56,7 +56,7 @@ router.get("/:pid", isLogued(), authUser(), productController.getProductById());
 //   }
 // });
 
-router.post("/", isLogued(), authAdmin(), productController.addProduct());
+router.post("/", isLogued, authAdmin, productController.addProduct.bind(productController));
 
 // router.put("/:pid", async (req, res) => {
 //   let pid = req.params.pid;
@@ -70,7 +70,7 @@ router.post("/", isLogued(), authAdmin(), productController.addProduct());
 //   }
 // });
 
-router.put("/:pid", isLogued(), authAdmin(), productController.updateProduct());
+router.put("/:pid", isLogued, authAdmin, productController.updateProduct.bind(productController));
 
 // router.delete("/:pid", async (req, res) => {
 //   let pid = req.params.pid;
@@ -85,9 +85,9 @@ router.put("/:pid", isLogued(), authAdmin(), productController.updateProduct());
 
 router.delete(
   "/:pid",
-  isLogued(),
-  authAdmin(),
-  productController.deleteProduct()
+  isLogued,
+  authAdmin,
+  productController.deleteProduct.bind(productController)
 );
 
 module.exports = router;

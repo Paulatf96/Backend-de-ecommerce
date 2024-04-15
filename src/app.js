@@ -10,17 +10,14 @@ const cors = require("cors");
 
 const PUERTO = 8080;
 const path = require("path");
-const productRouter = require("./routes/products.router.js");
+const productRouter = require("./routes/product.router.js");
 const cartRouter = require("./routes/cart.router.js");
 const viewsRouter = require("./routes/views.router.js");
 const userRouter = require("./routes/user.router.js");
-const sessionRouter = require("./routes/sessionRouter.js");
+const sessionRouter = require("./routes/session.router.js");
 require("./database.js");
 
 const app = express();
-const httpServer = app.listen(PUERTO, () => {
-  console.log("Servidor encendido en puerto 8080");
-});
 
 //Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -40,7 +37,9 @@ app.use(
   })
 );
 app.use(cors());
-
+const httpServer = app.listen(PUERTO, () => {
+  console.log("Servidor encendido en puerto 8080");
+});
 //Configuración passport
 initializePassport();
 app.use(passport.initialize());
@@ -60,24 +59,27 @@ app.use("/", viewsRouter);
 
 const io = socket(httpServer);
 
-const ProductManager = require("./controllers/productController.js");
-const productManager = new ProductManager();
+const ProductController = require("./controllers/product.controller.js");
+const productManager = new ProductController();
+const ProductRepository = require("./repositories/product.repository.js")
+const productRepository = new ProductRepository()
 
-const MessageManager = require("./controllers/messagesController.js");
-const messageManager = new MessageManager();
+const MessageController = require("./controllers/message.controller.js");
+const messageManager = new MessageController();
+
 
 io.on("connection", async (socket) => {
   console.log("Cliente conectado");
-  socket.emit("products", await productManager.getProducts());
+  socket.emit("products", await productRepository.getProducts());
 
   socket.on("delete", async (id) => {
-    await productManager.deleteProduct(id);
-    socket.emit("products", await productManager.getProducts());
+    await productRepository.deleteProduct(id);
+    socket.emit("products", await productRepository.getProducts());
   });
 
   socket.on("addProduct", async (data) => {
-    await productManager.addProduct(data);
-    socket.emit("products", await productManager.getProducts());
+    await productRepository.addProduct(data);
+    socket.emit("products", await productRepository.getProducts());
   });
 
   socket.emit("saveMessages", await messageManager.getMessages());

@@ -32,14 +32,14 @@ router.post(
   passport.authenticate("login", {
     failureRedirect: "/api/sessions/faillogin",
   }),
-  sessionController.createSession
+  sessionController.createSession.bind(sessionController)
 );
 
 // router.get("/faillogin", async (req, res) => {
 //   res.send({ error: "Error en loguin" });
 // });
 
-router.get("/faillogin", sessionController.failLogin());
+router.get("/faillogin", sessionController.failLogin.bind(sessionController));
 
 // router.get("/logout", (req, res) => {
 //   if (req.session.login) {
@@ -48,7 +48,7 @@ router.get("/faillogin", sessionController.failLogin());
 //   res.redirect("/");
 // });
 
-router.get("/logout", sessionController.logout());
+router.get("/logout", sessionController.logout.bind(sessionController));
 
 router.get(
   "/github",
@@ -69,6 +69,6 @@ router.get(
 router.get(
   "/githubcallback",
   passport.authenticate("github", { failureRedirect: "/login" }),
-  sessionController.githubcallback()
+  sessionController.githubcallback.bind(sessionController)
 );
 module.exports = router;

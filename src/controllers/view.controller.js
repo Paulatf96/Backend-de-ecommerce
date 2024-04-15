@@ -6,9 +6,9 @@ const cartRepository = new CartRepository();
 class ViewController {
   async renderView(req, res) {
     try {
-      let view = req.url;
-      if (req.url == "/") {
-        view = "/userProducst";
+      let view = req.url.slice(1);
+      if(view == ""){
+        view= "login"
       }
       res.render(view);
     } catch (error) {

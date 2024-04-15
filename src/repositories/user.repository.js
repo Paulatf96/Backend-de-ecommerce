@@ -2,7 +2,7 @@ const UserModel = require("../models/user.model.js");
 const { createHash, isValidPassword } = require("../utils/hashbcryp.js");
 
 class UserRepository {
-  async register(email, password, req) {
+  async register(password, req) {
     const { first_name, last_name, email, age, rol } = req.body;
     try {
       let user = await this.findUser(email);

@@ -30,13 +30,13 @@ router.post(
   passport.authenticate("register", {
     failureRedirect: "/api/users/failedregister",
   }),
-  userController.loguin()
+  userController.loguin.bind(userController)
 );
 
 // router.get("/failedregister", (req, res) => {
 //   res.send({ error: "Registro fallido" });
 // });
 
-router.get("/failedregister", userController.failRegister());
+router.get("/failedregister", userController.failRegister.bind(userController));
 
 module.exports = router;
