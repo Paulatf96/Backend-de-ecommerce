@@ -1,4 +1,7 @@
 const CartModel = require("../models/cart.model.js");
+const ProductModel = require("../models/product.model.js");
+const TicketRepository = require("./ticket.repository.js");
+const ticketRepository = new TicketRepository();
 
 class CartRepository {
   async getCartById(id) {
@@ -22,7 +25,7 @@ class CartRepository {
       const newCart = new CartModel({
         products: [],
       });
-      newCart.save();
+      return newCart.save();
     } catch (error) {
       console.log("Error al crear carrito");
     }
@@ -62,7 +65,7 @@ class CartRepository {
       }
       cart.products.splice(existingProductIndex, 1);
       cart.markModified("products");
-      cart.save();
+      return cart.save();
     } catch (error) {
       console.log("Error al eliminar el producto", error);
     }
@@ -79,7 +82,7 @@ class CartRepository {
         throw new Error("No pudimos encontrar el producto");
       }
       cart.markModified("products");
-      cart.save();
+      return cart.save();
     } catch (error) {
       console.log("Error al actualizar el producto", error);
     }
@@ -93,9 +96,76 @@ class CartRepository {
       }
       cart.products = [];
       cart.markModified("products");
-      cart.save();
+      return cart.save();
     } catch (error) {
       console.log("Error al eliminar los productos", error);
+    }
+  }
+
+  async getProductsFromCart(cid) {
+    try {
+      const cart = await this.getCartById(cid);
+      if (!cart) {
+        throw new Error("No pudimos encontrar el carrito");
+      }
+      const products = cart.products.map((producto) => {
+        const { _id, ...rest } = producto.toObject();
+        return rest;
+      });
+      return products;
+    } catch (error) {
+      console.log("Error al listar los productos", error);
+    }
+  }
+
+  async purchase(cid) {
+    try {
+      const cart = await this.getCartById(cid, userEmail);
+      let selledProducts = [];
+      let unavailableProducts = [];
+      // let verification = cart.products.map((product) => {
+      //   let productWithStock = ProductModel.findById(product._id);
+      //   if (productWithStock.stock >= product.quantity) {
+      //     productWithStock.stock -= product.quantity;
+      //     selledProducts.push(product);
+      //   } else {
+      //     unavailableProducts.push(product);
+      //   }
+      //   productWithStock.markModified("stock");
+      //   productWithStock.save();
+      // });
+
+      // return { unavailableProducts, selledProducts };
+
+      for (const product of cart.products) {
+        try {
+          const productWithStock = await ProductModel.findById(product._id);
+
+          if (productWithStock.stock >= product.quantity) {
+            productWithStock.stock -= product.quantity;
+            selledProducts.push(product);
+          } else {
+            unavailableProducts.push(product);
+          }
+          productWithStock.markModified("stock");
+          await productWithStock.save();
+        } catch (error) {
+          console.error(`Error al procesar el producto ${product._id}:`, error);
+        }
+      }
+      const ticket = await ticketRepository.createTicket(
+        selledProducts,
+        userEmail
+      );
+
+      const updatedCart = await this.deleteAllProducts();
+      cart.products.push(unavailableProducts);
+      cart.markModified("products");
+      await cart.save();
+
+      return { unavailableProducts, selledProducts, ticket, cart };
+    } catch (error) {
+      console.log("Error al realizar la compra", error);
     }
   }
 }
