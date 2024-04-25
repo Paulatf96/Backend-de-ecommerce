@@ -35,10 +35,10 @@ class UserController {
     const userDto = new UserDTO(
       req.user.first_name,
       req.user.last_name,
-      req.user.role
+      req.user.rol
     );
-    const isAdmin = req.user.role === "admin";
-
+    
+    const isAdmin = req.user.rol == "admin";
     res.render("profile", { user: userDto, isAdmin });
   }
 }

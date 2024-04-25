@@ -1,5 +1,5 @@
 function authAdmin(req, res, next) {
-  if (req.session.user && req.session.admin) {
+  if (req.user.rol == "admin") {
     return next();
   } else {
     return res.status(403).send("Usuario no autorizado");

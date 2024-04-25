@@ -87,10 +87,11 @@ class CartController {
 
   async purchase(req, res) {
     let cid = req.params.cid;
-    let userEmail = req.sessions.user.email;
+    let userEmail = "paulat@trujillo.com";
     try {
       const resultCart = await cartRepository.purchase(cid, userEmail);
-      res.status(200).redirect(`/carts/:${cid}`);
+      // res.status(200).redirect(`/carts/:${cid}`);
+      res.json(resultCart)
     } catch (error) {
       res.status(500).json({ error: "Error del servidor" });
     }

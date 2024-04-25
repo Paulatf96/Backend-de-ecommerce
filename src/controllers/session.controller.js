@@ -9,12 +9,11 @@ class SessionController {
         age: req.user.age,
         email: req.user.email,
         rol: req.user.rol,
-        cart: req.user.cart
+        cart: req.user.cart,
       };
-
       req.session.login = true;
 
-      res.redirect("/api/users/profile");
+      res.redirect("/current");
     } catch (error) {
       res.status(500).json({ error: "Error interno del servidor" });
     }

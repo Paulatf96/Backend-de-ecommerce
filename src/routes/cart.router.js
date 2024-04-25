@@ -28,6 +28,6 @@ router.put(
 
 router.delete("/:cid", cartController.deleteAllProducts.bind(cartController));
 
-router.post("/:cid/purchase", cartController.purchase.bind(cartController))
+router.post("/purchase/:cid/", cartController.purchase.bind(cartController))
 
 module.exports = router;

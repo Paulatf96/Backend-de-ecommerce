@@ -124,7 +124,6 @@ class ProductRepository {
   }
 
   async deleteProduct(id) {
-    console.log(id);
     try {
       const deleteProduct = await ProductModel.findByIdAndDelete(id);
       if (!deleteProduct) {

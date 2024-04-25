@@ -156,12 +156,17 @@ class CartRepository {
         userEmail
       );
 
-      await this.deleteAllProducts(cid);
-      cart.products.push(unavailableProducts);
+      // await this.deleteAllProducts(cid);
+      cart.products = cart.products.filter((product) => {
+        return !selledProducts.find(
+          (soldProduct) =>
+          soldProduct._id.toString() == product._id.toString()
+        );
+      });
       cart.markModified("products");
       await cart.save();
 
-      return { unavailableProducts, selledProducts, ticket, cart };
+      return { unavailableProducts, selledProducts, ticket,cart };
     } catch (error) {
       console.log("Error al realizar la compra", error);
     }

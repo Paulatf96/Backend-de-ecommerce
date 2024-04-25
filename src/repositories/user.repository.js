@@ -24,8 +24,6 @@ class UserRepository {
       };
 
       let result = await UserModel.create(newUser);
-      const userDto = new UserDTO(first_name, last_name, email, rol);
-      console.log("hola 3", result, userDto);
       return result;
     } catch (error) {
       console.log(error);

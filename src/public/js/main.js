@@ -19,7 +19,7 @@ const render = (products) => {
         `;
     productsContainer.appendChild(card);
     card.querySelector("button").addEventListener("click", () => {
-      deleteProduct(element._id);
+      deleteProduct(element.id);
     });
   });
 };
