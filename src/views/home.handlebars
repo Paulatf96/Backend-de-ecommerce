@@ -1,4 +1,9 @@
-<h1>Products Home</h1>
+<h1>Home</h1>
+
+<p>Bienvenido!, {{user.first_name}} {{user.last_name}}!</p>
+<p>Email: {{user.email}}</p>
+<p>Rol: {{user.rol}}</p>
+<a href="/api/sessions/logout">Cerrar sesión </a>
 
 <div id="productsContainer">
 {{#each products}}

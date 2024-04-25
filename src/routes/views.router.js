@@ -3,6 +3,8 @@ const router = express.Router();
 
 const ViewController = require("../controllers/view.controller.js");
 const viewController = new ViewController();
+const UserController = require("../controllers/user.controller");
+const userController = new UserController();
 
 const {
   authAdmin,
@@ -48,5 +50,7 @@ router.get(
   [isLogued, authUser],
   viewController.viewProducts.bind(viewController)
 );
+
+router.get("/current", [isLogued], userController.profile.bind(userController));
 
 module.exports = router;

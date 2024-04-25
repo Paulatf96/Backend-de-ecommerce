@@ -35,10 +35,11 @@ class ProductRepository {
       if (!paginatedResults?.docs.length) {
         throw new Error("No se encontraron resultados");
       }
-      const paginatedResultsFinal = paginatedResults.docs.map((product) => {
-        const { ...rest } = product.toObject();
-        return rest;
-      });
+
+      const paginatedResultsFinal = paginatedResults.docs.map((producto) => {
+        const { _id, ...rest } = producto.toObject();
+        return { id: _id, ...rest }; 
+    });
       const productInfo = {
         status: "success",
         payload: paginatedResultsFinal,

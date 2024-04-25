@@ -7,8 +7,8 @@ class ViewController {
   async renderView(req, res) {
     try {
       let view = req.url.slice(1);
-      if(view == ""){
-        view= "login"
+      if (view == "") {
+        view = "login";
       }
       res.render(view);
     } catch (error) {
@@ -22,7 +22,9 @@ class ViewController {
       const page = req.query.page;
       const limit = req.query.limit;
       const products = await productRepository.getProducts(limit, page);
-      res.render("products", {user: req.session.user,products});
+
+      const cartId = req.user.cart.toString();
+      res.render("products", { user: req.session.user, products, cartId });
     } catch (error) {
       console.log("Ha ocurrido un error", error);
       res.status(500).json({ error: "Error interno del servidor" });
@@ -33,8 +35,12 @@ class ViewController {
     try {
       const cid = req.params.cid;
       const cart = await cartRepository.getCartById(cid);
+      const cartArray = cart.products.map((producto) => {
+        const { _id, ...rest } = producto.toObject();
+        return rest;
+      });
       res.render("carts", {
-        products: cart,
+        products: cartArray,
       });
     } catch (error) {
       console.log("Ha ocurrido un error", error);

@@ -10,11 +10,8 @@ class CartRepository {
       if (!cart) {
         throw new Error("El carrito buscado no existe");
       }
-      const cartArray = cart.products.map((producto) => {
-        const { _id, ...rest } = producto.toObject();
-        return rest;
-      });
-      return cartArray;
+
+      return cart;
     } catch (error) {
       console.log("Error al buscar el carrito", error);
     }
@@ -118,9 +115,10 @@ class CartRepository {
     }
   }
 
-  async purchase(cid) {
+  async purchase(cid, userEmail) {
     try {
-      const cart = await this.getCartById(cid, userEmail);
+      const cart = await this.getCartById(cid);
+      const products = cart.products;
       let selledProducts = [];
       let unavailableProducts = [];
       // let verification = cart.products.map((product) => {
@@ -137,18 +135,18 @@ class CartRepository {
 
       // return { unavailableProducts, selledProducts };
 
-      for (const product of cart.products) {
+      for (const product of products) {
         try {
-          const productWithStock = await ProductModel.findById(product._id);
+          const productWithStock = await ProductModel.findById(product.product);
 
           if (productWithStock.stock >= product.quantity) {
             productWithStock.stock -= product.quantity;
             selledProducts.push(product);
+            productWithStock.markModified("stock");
+            await productWithStock.save();
           } else {
-            unavailableProducts.push(product);
+            unavailableProducts.push(product.product);
           }
-          productWithStock.markModified("stock");
-          await productWithStock.save();
         } catch (error) {
           console.error(`Error al procesar el producto ${product._id}:`, error);
         }
@@ -158,7 +156,7 @@ class CartRepository {
         userEmail
       );
 
-      const updatedCart = await this.deleteAllProducts();
+      await this.deleteAllProducts(cid);
       cart.products.push(unavailableProducts);
       cart.markModified("products");
       await cart.save();

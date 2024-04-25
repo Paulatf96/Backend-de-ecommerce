@@ -15,4 +15,6 @@ router.post(
 
 router.get("/failedregister", userController.failRegister.bind(userController));
 
+router.get("/profile", userController.profile.bind(userController));
+
 module.exports = router;

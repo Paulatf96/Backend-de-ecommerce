@@ -61,12 +61,11 @@ const io = socket(httpServer);
 
 const ProductController = require("./controllers/product.controller.js");
 const productManager = new ProductController();
-const ProductRepository = require("./repositories/product.repository.js")
-const productRepository = new ProductRepository()
+const ProductRepository = require("./repositories/product.repository.js");
+const productRepository = new ProductRepository();
 
 const MessageController = require("./controllers/message.controller.js");
 const messageManager = new MessageController();
-
 
 io.on("connection", async (socket) => {
   console.log("Cliente conectado");
@@ -89,3 +88,4 @@ io.on("connection", async (socket) => {
     socket.emit("saveMessages", await messageManager.getMessages());
   });
 });
+

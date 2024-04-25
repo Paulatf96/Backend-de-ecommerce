@@ -18,9 +18,10 @@ const initializePassport = () => {
       },
       async (req, username, password, done) => {
         try {
+          const { first_name, last_name, email, age, rol } = req.body
           let result = await userRepository.register(
             password,
-            req
+            first_name, last_name, email, age, rol
           );
 
           if (!result) {

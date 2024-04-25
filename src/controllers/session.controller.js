@@ -9,11 +9,12 @@ class SessionController {
         age: req.user.age,
         email: req.user.email,
         rol: req.user.rol,
+        cart: req.user.cart
       };
 
       req.session.login = true;
 
-      res.redirect("/userProducst");
+      res.redirect("/api/users/profile");
     } catch (error) {
       res.status(500).json({ error: "Error interno del servidor" });
     }
@@ -42,7 +43,7 @@ class SessionController {
     try {
       req.session.user = req.user;
       req.session.login = true;
-      res.redirect("/profile");
+      res.redirect("/api/users/profile");
     } catch (error) {
       res.status(500).json({ error: "Error interno del servidor" });
     }

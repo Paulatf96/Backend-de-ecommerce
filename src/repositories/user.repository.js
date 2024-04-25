@@ -1,15 +1,18 @@
 const UserModel = require("../models/user.model.js");
 const { createHash, isValidPassword } = require("../utils/hashbcryp.js");
+const UserDTO = require("../dto/user.dto.js");
+const CartRepository = require("./cart.repository.js");
+const cartRepository = new CartRepository();
 
 class UserRepository {
-  async register(password, req) {
-    const { first_name, last_name, email, age, rol } = req.body;
+  async register(password, first_name, last_name, email, age, rol) {
     try {
-      let user = await this.findUser(email);
+      let user = await UserModel.findOne({ email: email });
       if (user) {
         console.log("El usuario ya existe");
         return null;
       }
+      let cart = await cartRepository.createCart();
       let newUser = {
         first_name,
         last_name,
@@ -17,12 +20,16 @@ class UserRepository {
         age,
         rol: rol || "user",
         password: createHash(password),
+        cart: cart._id,
       };
 
       let result = await UserModel.create(newUser);
+      const userDto = new UserDTO(first_name, last_name, email, rol);
+      console.log("hola 3", result, userDto);
       return result;
     } catch (error) {
-      throw new Error("Error del servidor");
+      console.log(error);
+      throw new Error("Error del servidor", error);
     }
   }
 
@@ -43,8 +50,9 @@ class UserRepository {
         password: " ",
         rol: "user",
       };
-      let result = await UserModel.create(newUser);
-      return result;
+      await UserModel.create(newUser);
+      const userDto = UserDTO(first_name, last_name, email, rol);
+      return userDto;
     } catch (error) {
       throw new Error("Error del servidor");
     }
@@ -52,10 +60,11 @@ class UserRepository {
 
   async findUser(email) {
     try {
-      const user = await UserModel.findOne(email);
+      const user = await UserModel.findOne(email );
       return user;
     } catch (error) {
-      throw new Error("Error del servidor");
+      console.log(error)
+      throw new Error("Error del servidor",error);
     }
   }
 }

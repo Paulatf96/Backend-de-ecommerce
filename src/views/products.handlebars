@@ -1,10 +1,8 @@
 <h1>Vista Products</h1>
 
-<p>Bienvenido!, {{user.first_name}} {{user.last_name}}!</p>
-<p>Email: {{user.email}}</p>
-<p>Rol: {{user.rol}}</p>
-<a href="/api/sessions/logout">Cerrar sesión </a>
-
+    <form action="/carts/{{cartId}}" method="GET">
+        <button class="btnMios" type="submit">Ir al Carrito</button>
+    </form>
 
 <div id="productsContainer">
 {{#each products.payload}}
@@ -14,7 +12,12 @@
     <p>Descripción: {{this.description}}</p>
     <p>Código: {{this.code}} </p>
     <button>Agregar al carrito</button>
+    <form action="/api/cart/{{../cartId}}/products/{{this.id}}" method="POST">
+        <button class="btnMios" type="submit">Agregar al Carrito</button>
+    </form>
+   
 </div>
+
 
 {{/each}}
 

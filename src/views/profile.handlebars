@@ -1,6 +1,12 @@
 
 <h1>Mi Perfil</h1>
-<p>Bienvenido!, {{user.first_name}} {{user.last_name}}!</p>
-<p>Email: {{user.email}}</p>
-<p>Edad: {{user.age}}</p>
+<p>Bienvenido!, {{user.fullname}}!</p>
+<p>Rol: {{user.rol}}</p>
 <a href="/api/sessions/logout">Cerrar sesión </a>
+
+{{#if this.isAdmin}}
+    <a  href="/realtimeproducts">Modificar Productos</a>
+  {{else}}
+    <a  href="/chatOnline">Chat en vivo</a>
+    <a  href="/products">Tienda</a>
+  {{/if}}

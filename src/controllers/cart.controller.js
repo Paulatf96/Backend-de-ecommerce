@@ -1,5 +1,6 @@
 const CartRepository = require("../repositories/cart.repository.js");
 const cartRepository = new CartRepository();
+const UserDTO = require("../dto/user.dto.js");
 
 class CartController {
   async createCart(req, res) {
@@ -15,7 +16,7 @@ class CartController {
     let cid = req.params.cid;
     try {
       const products = await cartRepository.getProductsFromCart(cid);
-      res.status(200).json(products);
+      res.redirect(`/carts/${cid}`)
     } catch (error) {
       console.error("Error al listar los productos", error);
       res.status(500).json({ error: "Error del servidor" });
@@ -44,8 +45,7 @@ class CartController {
     try {
       const cart = await cartRepository.addProductToCart(cid, pid);
       res
-        .status(200)
-        .json({ message: "Producto agregado correctamente" }, cart);
+        res.redirect("/products");
     } catch (error) {
       console.error("Error al agregar el producto al carrito", error);
       res.status(500).json({ error: "Error del servidor" });
