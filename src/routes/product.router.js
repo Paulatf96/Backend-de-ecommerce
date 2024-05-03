@@ -22,4 +22,6 @@ router.delete(
   productController.deleteProduct.bind(productController)
 );
 
+router.get("/mockingproducts", productController.mocking.bind(productController))
+
 module.exports = router;

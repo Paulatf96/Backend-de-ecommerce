@@ -1,9 +1,9 @@
 const ProductRepository = require("../repositories/product.repository.js");
 const productRepository = new ProductRepository();
+const generateMocks = require("../utils/mocks.js");
 
 class ProductController {
   async getProducts(req, res) {
-
     try {
       const { limit, page, sort, category, stock } = req.query;
       let response = await productRepository.getProducts(
@@ -58,13 +58,26 @@ class ProductController {
     }
   }
 
-  async deleteProduct (req, res){
+  async deleteProduct(req, res) {
     let pid = req.params.pid;
     try {
       await productRepository.deleteProduct(pid);
       res.status(200).json({ message: "Producto eliminado correctamente" });
     } catch (error) {
       console.error("Error al eliminar el producto", error);
+      res.status(500).json({ error: "Error del servidor" });
+    }
+  }
+
+  async mocking(req, res) {
+    try {
+      let users = [];
+      for (let i = 0; i < 10; i++) {
+        users.push(generateMocks());
+      }
+      res.json(users);
+    } catch (error) {
+      console.error("Error al crear los productos", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }

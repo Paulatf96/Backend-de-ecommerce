@@ -67,6 +67,8 @@ const productRepository = new ProductRepository();
 const MessageController = require("./controllers/message.controller.js");
 const messageManager = new MessageController();
 
+const manejadorError = require("./middleware/error.js");
+
 io.on("connection", async (socket) => {
   console.log("Cliente conectado");
   socket.emit("products", await productRepository.getProducts());
