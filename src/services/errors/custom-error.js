@@ -2,7 +2,7 @@ class CustomError {
     static crearError({name = "Error", cause = "Desconocido", message, code = 1}){
         const error = new Error(message); 
         error.name = name;
-        error.causa = cause;
+        error.cause = cause;
         error.code = code;
         throw error; 
     }

@@ -70,12 +70,13 @@ class ProductController {
   }
 
   async mocking(req, res) {
+    console.log("AQui")
     try {
-      let users = [];
+      let products = [];
       for (let i = 0; i < 10; i++) {
-        users.push(generateMocks());
+        products.push(generateMocks());
       }
-      res.json(users);
+      res.json(products);
     } catch (error) {
       console.error("Error al crear los productos", error);
       res.status(500).json({ error: "Error del servidor" });
