@@ -7,6 +7,7 @@ const cartRepository = new CartRepository();
 class UserRepository {
   async register(password, first_name, last_name, email, age, rol) {
     try {
+
       let user = await UserModel.findOne({ email: email });
       if (user) {
         console.log("El usuario ya existe");

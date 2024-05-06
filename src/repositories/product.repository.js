@@ -1,4 +1,7 @@
 const ProductModel = require("../models/product.model.js");
+const CustomError = require("../services/errors/custom-error.js");
+const EErrors = require("../services/errors/enum.js");
+const { infoErrorProduct } = require("../services/errors/info.js");
 
 class ProductRepository {
   async getProducts(limit = 10, page = 1, sort, category, stock) {
@@ -38,8 +41,8 @@ class ProductRepository {
 
       const paginatedResultsFinal = paginatedResults.docs.map((producto) => {
         const { _id, ...rest } = producto.toObject();
-        return { id: _id, ...rest }; 
-    });
+        return { id: _id, ...rest };
+      });
       const productInfo = {
         status: "success",
         payload: paginatedResultsFinal,
@@ -68,8 +71,13 @@ class ProductRepository {
         !item.category ||
         !item.code
       ) {
-        console.log("No se puede agregar el producto, hay un campo vacio");
-        return;
+        CustomError.createError({
+          name: "Product create error",
+          cause: infoErrorProduct(item),
+          message: "Error trying to create product",
+          code: EErrors.INVALID_TYPE,
+        });
+        return null
       }
 
       let validation = await ProductModel.findOne({ code: item.code });
@@ -91,7 +99,6 @@ class ProductRepository {
         await newProduct.save();
       }
     } catch (error) {
-      console.log("Error al agregar el producto", error);
       throw error;
     }
   }

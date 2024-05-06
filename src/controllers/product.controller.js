@@ -2,6 +2,7 @@ const ProductRepository = require("../repositories/product.repository.js");
 const productRepository = new ProductRepository();
 const generateMocks = require("../utils/mocks.js");
 
+
 class ProductController {
   async getProducts(req, res) {
     try {
@@ -70,7 +71,6 @@ class ProductController {
   }
 
   async mocking(req, res) {
-    console.log("AQui")
     try {
       let products = [];
       for (let i = 0; i < 10; i++) {

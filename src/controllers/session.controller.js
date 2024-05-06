@@ -21,7 +21,7 @@ class SessionController {
 
   async failLogin(req, res) {
     try {
-      res.send({ error: "Error en login" });
+      res.send({ error: "Error en login, vuelva al inicio" });
     } catch (error) {
       res.status(500).json({ error: "Error interno del servidor" });
     }

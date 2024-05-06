@@ -22,15 +22,15 @@ class ViewController {
       const page = req.query.page;
       const limit = req.query.limit;
       const products = await productRepository.getProducts(limit, page);
-
-      const cartId = req.user.cart.toString();
-      res.render("products", { user: req.session.user, products, cartId });
+ 
+      const cartId = req.user.cart.toString() 
+      res.render("products", { user: req.session.user, products, cartId});
     } catch (error) {
       console.log("Ha ocurrido un error", error);
       res.status(500).json({ error: "Error interno del servidor" });
     }
   }
-
+ 
   async viewCart(req, res) {
     try {
       const cid = req.params.cid;
