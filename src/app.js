@@ -10,11 +10,13 @@ const cors = require("cors");
 
 const PUERTO = 8080;
 const path = require("path");
+const addLogger = require("./utils/logger.js");
 const productRouter = require("./routes/product.router.js");
 const cartRouter = require("./routes/cart.router.js");
 const viewsRouter = require("./routes/views.router.js");
 const userRouter = require("./routes/user.router.js");
 const sessionRouter = require("./routes/session.router.js");
+const loggerRouter = require("./routes/logger.router.js");
 require("./database.js");
 
 const app = express();
@@ -40,11 +42,11 @@ app.use(cors());
 const httpServer = app.listen(PUERTO, () => {
   console.log("Servidor encendido en puerto 8080");
 });
+app.use(addLogger);
 //Configuración passport
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 //Configuración handlebars
 app.engine("handlebars", exphbs.engine());
@@ -57,9 +59,10 @@ app.use("/api/product", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/sessions", sessionRouter);
 app.use("/", viewsRouter);
+app.use("/", loggerRouter);
 
 app.use((req, res, next) => {
-  res.status(404).render('404');
+  res.status(404).render("404");
 });
 
 const io = socket(httpServer);

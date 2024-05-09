@@ -2,7 +2,6 @@ const ProductRepository = require("../repositories/product.repository.js");
 const productRepository = new ProductRepository();
 const generateMocks = require("../utils/mocks.js");
 
-
 class ProductController {
   async getProducts(req, res) {
     try {
@@ -16,7 +15,7 @@ class ProductController {
       );
       res.json(response);
     } catch (error) {
-      console.error("Error al obtener los productos", error);
+      req.logger.error("Error al obtener los productos", error);
       res.status(500).json({ error: "Error interno del servidor" });
     }
   }
@@ -29,9 +28,10 @@ class ProductController {
         res.json(product);
       } else {
         res.json({ error: "Producto no encontrado" });
+        req.logger.warning(`No pudimos encontrar el producto con id ${pid}`);
       }
     } catch (error) {
-      console.error("Error al obtener el producto", error);
+      req.logger.error("Error al obtener el producto", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
@@ -40,9 +40,12 @@ class ProductController {
     let product = req.body;
     try {
       await productRepository.addProduct(product);
+      req.logger.info(
+        `Nuevo producto agregado el ${new Date().toLocaleString()}}`
+      );
       res.status(201).json({ message: "Producto agregado correctamente" });
     } catch (error) {
-      console.error("Error al agregar el producto", error);
+      req.logger.error("Error al agregar el producto", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
@@ -54,7 +57,7 @@ class ProductController {
       await productRepository.updateProduct(pid, product);
       res.status(200).json({ message: "Producto actualizado correctamente" });
     } catch (error) {
-      console.error("Error al actualizar el producto", error);
+      req.logger.error("Error al actualizar el producto", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
@@ -63,9 +66,12 @@ class ProductController {
     let pid = req.params.pid;
     try {
       await productRepository.deleteProduct(pid);
+      req.logger.info(
+        `El producto con id ${pid} fue elimiado el ${new Date().toLocaleString()}}`
+      );
       res.status(200).json({ message: "Producto eliminado correctamente" });
     } catch (error) {
-      console.error("Error al eliminar el producto", error);
+      req.logger.error("Error al eliminar el producto", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
@@ -78,7 +84,7 @@ class ProductController {
       }
       res.json(products);
     } catch (error) {
-      console.error("Error al crear los productos", error);
+      req.logger.error("Error al crear los productos", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }

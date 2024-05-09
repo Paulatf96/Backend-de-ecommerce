@@ -18,16 +18,21 @@ class UserController {
 
       res.redirect("/api/users/profile");
     } catch (error) {
-      console.log("Ha ocurrido un error", error);
+      req.logger.error("Ha ocurrido un error en el login", error);
       res.status(500).json({ error: "Error interno del servidor" });
     }
   }
 
   async failRegister(req, res) {
     try {
+      req.logger.warning(
+        `No pudimos realizar el registro de ${
+          req.user.email
+        } el -- ${new Date().toLocaleString()}`
+      );
       res.send({ error: "Registro fallido" });
     } catch (error) {
-      console.log("Ha ocurrido un error", error);
+      req.logger.error("Ha ocurrido un error en el registro", error);
       res.status(500).json({ error: "Error interno del servidor" });
     }
   }
@@ -37,7 +42,7 @@ class UserController {
       req.user.last_name,
       req.user.rol
     );
-    
+
     const isAdmin = req.user.rol == "admin";
     res.render("profile", { user: userDto, isAdmin });
   }

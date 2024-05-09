@@ -8,7 +8,7 @@ class CartController {
       const nuevoCarrito = await cartRepository.createCart();
       res.status(200).json(nuevoCarrito);
     } catch (error) {
-      console.error("Error al crear el carrito", error);
+      req.logger.error("Error al crear el carrito", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
@@ -16,9 +16,9 @@ class CartController {
     let cid = req.params.cid;
     try {
       const products = await cartRepository.getProductsFromCart(cid);
-      res.redirect(`/carts/${cid}`)
+      res.redirect(`/carts/${cid}`);
     } catch (error) {
-      console.error("Error al listar los productos", error);
+      req.logger.error("Error al listar los productos", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
@@ -30,10 +30,11 @@ class CartController {
       if (cart) {
         res.json(cart);
       } else {
-        res.json({ error: "Carrito no encontrado" });
+        req.json({ error: "Carrito no encontrado" });
+        req.logger.warning(`No pudimos encontrar el carrito con id ${cid}`);
       }
     } catch (error) {
-      console.error("Error al obtener el carrito", error);
+      req.logger.error("Error al obtener el carrito", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
@@ -44,10 +45,10 @@ class CartController {
 
     try {
       const cart = await cartRepository.addProductToCart(cid, pid);
-      res
-        res.redirect("/products");
+      res;
+      res.redirect("/products");
     } catch (error) {
-      console.error("Error al agregar el producto al carrito", error);
+      req.logger.error("Error al agregar el producto al carrito", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
@@ -59,6 +60,7 @@ class CartController {
       const cart = await cartRepository.deleteProduct(cid, pid);
       res.status(200).json({ message: "Producto eliminado con éxito" }, cart);
     } catch (error) {
+      req.logger.error("Error al eliminar el producto", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
@@ -71,6 +73,7 @@ class CartController {
       const cart = await cartRepository.upDateProduct(cid, pid, quantity);
       res.status(200).json({ message: "Producto actualizado con éxito" }, cart);
     } catch (error) {
+      req.logger.error("Error al actualizar el producto", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
@@ -81,6 +84,7 @@ class CartController {
       await cartRepository.deleteAllProducts(cid);
       res.status(200).json({ message: "Productos eliminados con éxito" });
     } catch (error) {
+      req.logger.error("Error al eliminar los productos del carrito", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
@@ -90,9 +94,9 @@ class CartController {
     let userEmail = "paulat@trujillo.com";
     try {
       const resultCart = await cartRepository.purchase(cid, userEmail);
-      // res.status(200).redirect(`/carts/:${cid}`);
-      res.json(resultCart)
+      res.json(resultCart);
     } catch (error) {
+      req.logger.error("Error al finalizar la compra", error);
       res.status(500).json({ error: "Error del servidor" });
     }
   }
