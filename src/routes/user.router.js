@@ -17,4 +17,11 @@ router.get("/failedregister", userController.failRegister.bind(userController));
 
 router.get("/profile", userController.profile.bind(userController));
 
+router.get("/password", userController.password.bind(userController));
+
+router.put(
+  "/reset-password",
+  userController.resetPassword.bind(userController)
+);
+
 module.exports = router;

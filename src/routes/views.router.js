@@ -52,5 +52,6 @@ router.get(
 );
 
 router.get("/current", [isLogued], userController.profile.bind(userController));
+router.get("/password", viewController.renderView.bind(viewController));
 
 module.exports = router;
