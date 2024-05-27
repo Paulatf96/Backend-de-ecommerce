@@ -1,6 +1,7 @@
 const UserModel = require("../models/user.model.js");
 const UserDTO = require("../dto/user.dto.js");
-const transport = require("../config/transport.config.js");
+const EmailManager = require("../services/email.js");
+const emailManager = new EmailManager();
 const { generarResetToken } = require("../utils/tokenreset.js");
 const { createHash, isValidPassword } = require("../utils/hashbcryp.js");
 
@@ -49,6 +50,7 @@ class UserController {
     const isAdmin = req.user.rol == "admin";
     res.render("profile", { user: userDto, isAdmin });
   }
+
   async password(req, res) {
     const { email } = req.body;
 
@@ -64,19 +66,10 @@ class UserController {
         expire: new Date(Date.now() + 3600000), // 1 Hora de duración.
       };
       await user.save();
-      let result = await transport.sendMail({
-        from: "Atenea Ecommerce <paula.tf96@gmail.com>",
-        to: email,
-        subject: "Recuperación de contraseña",
-        html: `
-        <p> ¡Hola! Solicitaste una nueva contraseña</p>
-        <strong> ${token} </strong>
-        <p> Este código expira en una hora </p>
-        <a href="http://localhost:8080/password"> Restablecer Contraseña </a>
-  
-        `,
-        attachments: [],
-      });
+
+      await emailManager.sendResetEmail(email, token);
+
+      res.redirect("/confirmationPassword");
     } catch (error) {
       res.status(500).send("Error interno del servidor");
     }
@@ -97,8 +90,8 @@ class UserController {
         });
       }
 
-      const ahora = new Date();
-      if (ahora > resetToken.expire) {
+      const now = new Date();
+      if (now > resetToken.expire) {
         return res.render("changepassword", {
           error: "El token de restablecimiento de contraseña es invalido",
         });
@@ -119,6 +112,26 @@ class UserController {
       return res
         .status(500)
         .render("changepassword", { error: "Error interno del servidor" });
+    }
+  }
+
+  async changeRolPremium(req, res) {
+    const { uid } = req.params;
+    try {
+      const user = await UserModel.findById(uid);
+
+      if (!user) {
+        return res.status(404).send("Usuario no encontrado");
+      }
+
+      const nuevoRol = user.rol === "usuario" ? "premium" : "usuario";
+
+      const actualizado = await UserModel.findByIdAndUpdate(uid, {
+        rol: nuevoRol,
+      });
+      res.json(actualizado);
+    } catch (error) {
+      res.status(500).send("Error interno del servidor");
     }
   }
 }

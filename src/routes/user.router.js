@@ -17,11 +17,16 @@ router.get("/failedregister", userController.failRegister.bind(userController));
 
 router.get("/profile", userController.profile.bind(userController));
 
-router.get("/password", userController.password.bind(userController));
+router.post("/password", userController.password.bind(userController));
 
-router.put(
+router.post(
   "/reset-password",
   userController.resetPassword.bind(userController)
+);
+
+router.put(
+  "premium/:uid",
+  userController.changeRolPremium.bind(userController)
 );
 
 module.exports = router;
