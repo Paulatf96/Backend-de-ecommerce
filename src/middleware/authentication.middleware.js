@@ -7,7 +7,7 @@ function authAdmin(req, res, next) {
 }
 
 function authUser(req, res, next) {
-  if (req.user.rol == "user") {
+  if (req.user.rol == "user" || req.user.rol == "premium") {
     return next();
   } else {
     return res.status(403).send("Usuario no autorizado");

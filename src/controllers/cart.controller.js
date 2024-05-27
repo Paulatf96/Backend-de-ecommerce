@@ -1,5 +1,7 @@
 const CartRepository = require("../repositories/cart.repository.js");
 const cartRepository = new CartRepository();
+const ProductRepository = require("../repositories/product.repository.js");
+const productRepository = new ProductRepository();
 const UserDTO = require("../dto/user.dto.js");
 
 class CartController {
@@ -44,6 +46,17 @@ class CartController {
     let pid = req.params.pid;
 
     try {
+      const product = await productRepository.getProductById(pid);
+
+      if (!product) {
+        return res.status(404).json({ message: "Producto no encontrado" });
+      }
+
+      if (req.user.role === "premium" && producto.owner === req.user.email) {
+        return res.status(403).json({
+          message: "No puedes agregar tu propio producto al carrito.",
+        });
+      }
       const cart = await cartRepository.addProductToCart(cid, pid);
       res;
       res.redirect("/products");

@@ -10,7 +10,7 @@ class ViewController {
       if (view == "") {
         view = "login";
       }
-      res.render(view);
+      res.render(view, { user: req.session.user });
     } catch (error) {
       req.logger.error(
         "Ha ocurrido un error renderizando la vista solicitada",

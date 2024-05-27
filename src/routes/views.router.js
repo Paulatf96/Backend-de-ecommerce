@@ -15,7 +15,7 @@ const {
 
 router.get(
   "/realtimeproducts",
-  [isLogued, authAdmin],
+  [isLogued],
   viewController.renderView.bind(viewController)
 );
 

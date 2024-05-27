@@ -34,6 +34,7 @@ class CartRepository {
       const existingProduct = cart.products.find(
         (prod) => prod._id.toString() == pid
       );
+
       if (existingProduct) {
         existingProduct.quantity += quantity;
       } else {
@@ -159,14 +160,13 @@ class CartRepository {
       // await this.deleteAllProducts(cid);
       cart.products = cart.products.filter((product) => {
         return !selledProducts.find(
-          (soldProduct) =>
-          soldProduct._id.toString() == product._id.toString()
+          (soldProduct) => soldProduct._id.toString() == product._id.toString()
         );
       });
       cart.markModified("products");
       await cart.save();
 
-      return { unavailableProducts, selledProducts, ticket,cart };
+      return { unavailableProducts, selledProducts, ticket, cart };
     } catch (error) {
       console.log("Error al realizar la compra", error);
     }

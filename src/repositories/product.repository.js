@@ -77,7 +77,7 @@ class ProductRepository {
           message: "Error trying to create product",
           code: EErrors.INVALID_TYPE,
         });
-        return null
+        return null;
       }
 
       let validation = await ProductModel.findOne({ code: item.code });
@@ -95,6 +95,7 @@ class ProductRepository {
           category: item.category,
           status: item.status || true,
           thumbnail: item.thumbnail || [],
+          owner,
         });
         await newProduct.save();
       }

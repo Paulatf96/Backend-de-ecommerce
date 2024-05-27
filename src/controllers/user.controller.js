@@ -48,7 +48,8 @@ class UserController {
     );
 
     const isAdmin = req.user.rol == "admin";
-    res.render("profile", { user: userDto, isAdmin });
+    const isPremium = req.user.rol == "premium";
+    res.render("profile", { user: userDto, isAdmin, isPremium });
   }
 
   async password(req, res) {

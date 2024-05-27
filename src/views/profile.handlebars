@@ -4,9 +4,13 @@
 <p>Rol: {{user.rol}}</p>
 <a href="/api/sessions/logout">Cerrar sesión </a>
 
-{{#if this.isAdmin}}
-    <a  href="/realtimeproducts">Modificar Productos</a>
-  {{else}}
-    <a  href="/chatOnline">Chat en vivo</a>
+
+  {{#if this.isAdmin}}
+	<a href="/realtimeproducts">Modificar Productos</a>
+	{{else}}
+	{{#if this.isPremium}}
+	<a href="/realtimeproducts">Panel Premium</a>
+	{{/if}}
+   <a  href="/chatOnline">Chat en vivo</a>
     <a  href="/products">Tienda</a>
   {{/if}}

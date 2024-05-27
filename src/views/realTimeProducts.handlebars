@@ -1,8 +1,7 @@
 
 <h1> Real  Time Products</h1>
-
-<div id="realTimeContainer"></div>
-
+<h3 id="rol">{{user.rol}}</h3>
+<h3 id="email">{{user.email}}</h3>
 <h5>Agrega productos aqui:</h5>
 
 <form id="formAddProduct">
@@ -16,5 +15,8 @@
     <input type="text" id="status" value="true"> 
 <button id="sendButton">Crear producto</button>
 </form>
+
+<div id="realTimeContainer"></div>
+
     <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
     <script src="js/main.js"></script>

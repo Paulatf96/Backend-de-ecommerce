@@ -1,4 +1,6 @@
 const socket = io();
+const rol = document.getElementById("rol").textContent;
+const email = document.getElementById("email").textContent;
 
 socket.on("products", (data) => {
   render(data.payload);
@@ -18,8 +20,15 @@ const render = (products) => {
         <button class="deleteButton"> Eliminar </button>
         `;
     productsContainer.appendChild(card);
+
     card.querySelector("button").addEventListener("click", () => {
-      deleteProduct(element.id);
+      if (rol === "premium" && element.owner === email) {
+        deleteProduct(element._id);
+      } else if (rol === "admin") {
+        deleteProduct(element._id);
+      } else {
+        alert("No puedes eliminar el producto");
+      }
     });
   });
 };
@@ -33,6 +42,8 @@ document.getElementById("sendButton").addEventListener("click", () => {
 });
 
 const addProduct = () => {
+  const owner = rol === "premium" ? email : "admin";
+
   const product = {
     title: document.getElementById("title").value,
     description: document.getElementById("description").value,
@@ -42,8 +53,8 @@ const addProduct = () => {
     stock: document.getElementById("stock").value,
     category: document.getElementById("category").value,
     status: document.getElementById("status").value,
+    owner,
   };
 
   socket.emit("addProduct", product);
 };
-
