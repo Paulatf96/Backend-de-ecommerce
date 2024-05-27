@@ -7,6 +7,9 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const initializePassport = require("./config/passport.config.js");
 const cors = require("cors");
+const swaggerJsdoc = require("swagger-jsdoc");
+
+const swaggerUi = require("swagger-ui-express");
 
 const PUERTO = 8080;
 const path = require("path");
@@ -18,6 +21,7 @@ const userRouter = require("./routes/user.router.js");
 const sessionRouter = require("./routes/session.router.js");
 const loggerRouter = require("./routes/logger.router.js");
 require("./database.js");
+const swaggerOptions = require("./config/swagger.config.js");
 
 const app = express();
 
@@ -98,3 +102,7 @@ io.on("connection", async (socket) => {
     socket.emit("saveMessages", await messageManager.getMessages());
   });
 });
+
+const specs = swaggerJsdoc(swaggerOptions);
+
+app.use("/apidocs", swaggerUi.serve, swaggerUi.setup(specs));
