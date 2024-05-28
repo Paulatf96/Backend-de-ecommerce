@@ -43,9 +43,6 @@ app.use(
   })
 );
 app.use(cors());
-const httpServer = app.listen(PUERTO, () => {
-  console.log("Servidor encendido en puerto 8080");
-});
 app.use(addLogger);
 //Configuración passport
 initializePassport();
@@ -64,11 +61,16 @@ app.use("/api/users", userRouter);
 app.use("/api/sessions", sessionRouter);
 app.use("/", viewsRouter);
 app.use("/", loggerRouter);
+const specs = swaggerJsdoc(swaggerOptions);
+app.use("/apidocs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use((req, res, next) => {
   res.status(404).render("404");
 });
 
+const httpServer = app.listen(PUERTO, () => {
+  console.log("Servidor encendido en puerto 8080");
+});
 const io = socket(httpServer);
 
 const ProductController = require("./controllers/product.controller.js");
@@ -102,7 +104,3 @@ io.on("connection", async (socket) => {
     socket.emit("saveMessages", await messageManager.getMessages());
   });
 });
-
-const specs = swaggerJsdoc(swaggerOptions);
-
-app.use("/apidocs", swaggerUi.serve, swaggerUi.setup(specs));

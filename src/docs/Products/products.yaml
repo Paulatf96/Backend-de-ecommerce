@@ -1,0 +1,168 @@
+openapi: 3.0.0
+info:
+  title: Atenea eCommerce API
+  description: API para el manejo de productos en el eCommerce Atenea.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /products:
+    get:
+      summary: Obtener productos con paginación
+      tags:
+        - Products
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          description: Número de productos a devolver
+        - name: page
+          in: query
+          schema:
+            type: integer
+          description: Página de productos a devolver
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+          description: Ordenar productos por precio
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: Filtrar productos por categoría
+        - name: stock
+          in: query
+          schema:
+            type: boolean
+          description: Filtrar productos con stock disponible
+      responses:
+        "200":
+          description: Lista de productos obtenida con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedProducts"
+        "500":
+          description: Error del servidor
+
+    post:
+      summary: Agregar un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+      responses:
+        "201":
+          description: Producto agregado correctamente
+        "500":
+          description: Error del servidor
+
+  /products/{pid}:
+    get:
+      summary: Obtener un producto por ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto obtenido con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error del servidor
+
+    put:
+      summary: Actualizar un producto
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+      responses:
+        "200":
+          description: Producto actualizado correctamente
+        "500":
+          description: Error del servidor
+
+    delete:
+      summary: Eliminar un producto
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado correctamente
+        "500":
+          description: Error del servidor
+
+  /products/mocking/product:
+    get:
+      summary: Obtener productos de prueba
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Productos de prueba obtenidos con éxito
+        "500":
+          description: Error del servidor
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        img:
+          type: string
+        code:
+          type: string
+        stock:
+          type: number
+        category:
+          type: string
+        status:
+          type: boolean
+        thumbnail:
+          type: array
+          items:
+            type: string
+        owner:
+          type: string

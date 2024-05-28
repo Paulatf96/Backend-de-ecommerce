@@ -122,19 +122,6 @@ class CartRepository {
       const products = cart.products;
       let selledProducts = [];
       let unavailableProducts = [];
-      // let verification = cart.products.map((product) => {
-      //   let productWithStock = ProductModel.findById(product._id);
-      //   if (productWithStock.stock >= product.quantity) {
-      //     productWithStock.stock -= product.quantity;
-      //     selledProducts.push(product);
-      //   } else {
-      //     unavailableProducts.push(product);
-      //   }
-      //   productWithStock.markModified("stock");
-      //   productWithStock.save();
-      // });
-
-      // return { unavailableProducts, selledProducts };
 
       for (const product of products) {
         try {

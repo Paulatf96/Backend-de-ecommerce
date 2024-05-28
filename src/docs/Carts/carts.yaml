@@ -1,0 +1,175 @@
+openapi: 3.0.0
+info:
+  title: Atenea eCommerce API
+  description: API para el manejo de carritos de compras en el eCommerce Atenea.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /carts:
+    post:
+      summary: Crear un nuevo carrito
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Carrito creado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "500":
+          description: Error del servidor
+
+  /carts/{cid}:
+    get:
+      summary: Obtener un carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito obtenido con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error del servidor
+
+    delete:
+      summary: Eliminar todos los productos de un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Productos eliminados con éxito
+        "500":
+          description: Error del servidor
+
+  /carts/{cid}/products/{pid}:
+    post:
+      summary: Agregar un producto al carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto agregado con éxito
+        "404":
+          description: Producto no encontrado
+        "403":
+          description: No puedes agregar tu propio producto al carrito
+        "500":
+          description: Error del servidor
+
+    delete:
+      summary: Eliminar un producto del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado con éxito
+        "500":
+          description: Error del servidor
+
+    put:
+      summary: Actualizar la cantidad de un producto en el carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+      responses:
+        "200":
+          description: Producto actualizado con éxito
+        "500":
+          description: Error del servidor
+
+  /carts/purchase/{cid}:
+    post:
+      summary: Finalizar la compra de un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Compra finalizada con éxito
+        "500":
+          description: Error del servidor
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductInCart"
+    ProductInCart:
+      type: object
+      properties:
+        product:
+          type: string
+        quantity:
+          type: number
