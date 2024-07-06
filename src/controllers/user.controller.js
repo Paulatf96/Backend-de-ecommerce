@@ -1,5 +1,7 @@
 const UserModel = require("../models/user.model.js");
 const UserDTO = require("../dto/user.dto.js");
+const UserRepository = require("../repositories/user.repository.js");
+const userRepository = new UserRepository();
 const EmailManager = require("../services/email.js");
 const emailManager = new EmailManager();
 const { generarResetToken } = require("../utils/tokenreset.js");
@@ -16,6 +18,7 @@ class UserController {
         age: req.user.age,
         email: req.user.email,
         rol: req.user.rol,
+        lastConnection: req.user.lastConnecction,
       };
 
       req.session.login = true;
@@ -41,10 +44,13 @@ class UserController {
     }
   }
   async profile(req, res) {
+    console.log(req.user);
     const userDto = new UserDTO(
       req.user.first_name,
       req.user.last_name,
-      req.user.rol
+      req.user.rol,
+      req.user.email,
+      req.user.lastConnecction
     );
 
     const isAdmin = req.user.rol == "admin";
@@ -125,7 +131,7 @@ class UserController {
         return res.status(404).send("Usuario no encontrado");
       }
 
-      const nuevoRol = user.rol === "usuario" ? "premium" : "usuario";
+      const nuevoRol = user.rol === "user" ? "premium" : "user";
 
       const actualizado = await UserModel.findByIdAndUpdate(uid, {
         rol: nuevoRol,
@@ -133,6 +139,39 @@ class UserController {
       res.json(actualizado);
     } catch (error) {
       res.status(500).send("Error interno del servidor");
+    }
+  }
+  async getUsers(req, res) {
+    try {
+      const users = await UserModel.find();
+      if (!users) {
+        return res.status(404).send("Sin usuarios");
+      }
+      const userDTOs = users.map(
+        (user) =>
+          new UserDTO(
+            user.first_name,
+            user.last_name,
+            user.rol,
+            user.email,
+            user.lastConnection
+          )
+      );
+      res.render("users", { users: userDTOs });
+    } catch (error) {
+      res.status(500).send("Error interno del servidor");
+    }
+  }
+
+  async deleteUsers(req, res) {
+    try {
+      const users = await userRepository.deleteUsers();
+      if (!users) {
+        return res.status(404).send("Sin usuarios");
+      }
+      res.json(users);
+    } catch (error) {
+      res.status(500).send(error);
     }
   }
 }

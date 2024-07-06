@@ -1,0 +1,13 @@
+<h1> Usuarios E-commerce</h1>
+
+{{#each users}}
+<div class="card">
+    <p>Nombre:{{this.fullname}} </p>
+    <p>Correo: {{this.email}}</p>
+    <p>Rol: {{this.rol}}</p>
+    <p>Última conexión: {{this.lastConnection}} </p>
+</div>
+{{/each}}
+
+<a href="/current">Volver a perfil</a>
+

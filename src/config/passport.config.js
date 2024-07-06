@@ -18,10 +18,14 @@ const initializePassport = () => {
       },
       async (req, username, password, done) => {
         try {
-          const { first_name, last_name, email, age, rol } = req.body
+          const { first_name, last_name, email, age, rol } = req.body;
           let result = await userRepository.register(
             password,
-            first_name, last_name, email, age, rol
+            first_name,
+            last_name,
+            email,
+            age,
+            rol
           );
 
           if (!result) {
@@ -29,21 +33,6 @@ const initializePassport = () => {
           } else {
             return done(null, result);
           }
-          // try {
-          //   let user = await UserModel.findOne({ email: username });
-          //   if (user) {
-          //     console.log("El usuario ya existe");
-          //     return done(null, false);
-          //   }
-          //   let newUser = {
-          //     first_name,
-          //     last_name,
-          //     email,
-          //     age,
-          //     rol: rol || "user",
-          //     password: createHash(password),
-          //   };
-          //   let result = await UserModel.create(newUser);
         } catch (error) {
           return done(error);
         }
@@ -69,7 +58,8 @@ const initializePassport = () => {
           if (!isValidPassword(password, user)) {
             return done(null, false);
           }
-
+          user.lastConnection = new Date();
+          await user.save();
           return done(null, user);
         } catch (error) {
           return done(error);
@@ -103,20 +93,6 @@ const initializePassport = () => {
           } else {
             done(null, user);
           }
-          // if (!user) {
-          //   let newUser = {
-          //     first_name: profile._json.name,
-          //     last_name: " ",
-          //     age: undefined,
-          //     email: profile._json.email,
-          //     password: " ",
-          //     rol: "user",
-          //   };
-          //   let result = await UserModel.create(newUser);
-          //   done(null, result);
-          // } else {
-          //   done(null, user);
-          // }
         } catch (error) {
           return done(error);
         }

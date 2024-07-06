@@ -25,8 +25,12 @@ router.post(
 );
 
 router.put(
-  "premium/:uid",
+  "/premium/:uid",
   userController.changeRolPremium.bind(userController)
 );
+
+router.get("/all-users", userController.getUsers.bind(userController));
+
+router.delete("/delete", userController.deleteUsers.bind(userController));
 
 module.exports = router;
