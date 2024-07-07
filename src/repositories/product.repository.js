@@ -1,6 +1,8 @@
 const ProductModel = require("../models/product.model.js");
 const CustomError = require("../services/errors/custom-error.js");
 const EErrors = require("../services/errors/enum.js");
+const EmailManager = require("../services/email.js");
+const emailManager = new EmailManager();
 const { infoErrorProduct } = require("../services/errors/info.js");
 
 class ProductRepository {
@@ -133,11 +135,15 @@ class ProductRepository {
 
   async deleteProduct(id) {
     try {
-      const deleteProduct = await ProductModel.findByIdAndDelete(id);
-      if (!deleteProduct) {
+      const deletedProduct = await ProductModel.findByIdAndDelete(id);
+      if (!deletedProduct) {
         throw new Error("No pudimos encontrar el producto");
       }
-      console.log("Producto eliminado con éxito");
+      console.log("Producto eliminado con éxito", deletedProduct);
+      if (deletedProduct.owner !== "admin") {
+        await emailManager.sendEmailDeletedProduct(deletedProduct.owner, id);
+      }
+      return deletedProduct;
     } catch (error) {
       console.log("Error al eliminar el producto", error);
     }

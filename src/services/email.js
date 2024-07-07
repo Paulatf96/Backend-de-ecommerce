@@ -64,6 +64,22 @@ class EmailManager {
       console.error("Error enviando el correo electrónico:", error);
     }
   }
+
+  async sendEmailDeletedProduct(email, id) {
+    try {
+      const mailOptions = {
+        from: "Atenea Ecommerce <paula.tf96@gmail.com>",
+        to: email,
+        subject: "Producto eliminaro",
+        html: `<h1>Se ha eliminado un producto</h1>
+                  <p>Hola, te informamos que tu producto con id: ${id} ha sido eliminado</p>`,
+      };
+
+      await this.transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.error("Error enviando el correo electrónico:", error);
+    }
+  }
 }
 
 module.exports = EmailManager;

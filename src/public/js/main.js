@@ -22,10 +22,9 @@ const render = (products) => {
     productsContainer.appendChild(card);
 
     card.querySelector("button").addEventListener("click", () => {
-      if (rol === "premium" && element.owner === email) {
-        deleteProduct(element._id);
-      } else if (rol === "admin") {
-        deleteProduct(element._id);
+      if ((rol === "premium" && element.owner === email) || rol === "admin") {
+        console.log(element);
+        deleteProduct(element.id);
       } else {
         alert("No puedes eliminar el producto");
       }
@@ -43,7 +42,6 @@ document.getElementById("sendButton").addEventListener("click", () => {
 
 const addProduct = () => {
   const owner = rol === "premium" ? email : "admin";
-
   const product = {
     title: document.getElementById("title").value,
     description: document.getElementById("description").value,
