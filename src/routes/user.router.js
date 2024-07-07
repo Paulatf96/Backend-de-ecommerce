@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const { authAdmin } = require("../middleware/authentication.middleware.js");
 
 const UserController = require("../controllers/user.controller");
 const userController = new UserController();
@@ -29,8 +30,17 @@ router.put(
   userController.changeRolPremium.bind(userController)
 );
 
-router.get("/all-users", userController.getUsers.bind(userController));
+router.get(
+  "/all-users",
+  authAdmin,
+  userController.getUsers.bind(userController)
+);
 
-router.delete("/delete", userController.deleteUsers.bind(userController));
+router.delete(
+  "/delete-inactive",
+  userController.deleteInactiveUsers.bind(userController)
+);
+
+router.delete("/delete/:uid", userController.delete.bind(userController));
 
 module.exports = router;

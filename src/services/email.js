@@ -48,6 +48,22 @@ class EmailManager {
       console.error("Error enviando el correo electrónico:", error);
     }
   }
+
+  async sendEmailInactiveAccount(email, first_name) {
+    try {
+      const mailOptions = {
+        from: "Atenea Ecommerce <paula.tf96@gmail.com>",
+        to: email,
+        subject: "Cuenta Inactiva",
+        html: `<h1>Cuenta inactiva</h1>
+                  <p>Hola ${first_name}, te informamos que tu cuenta ha sido eliminada por inactividad durante los últimos 2 días </p>`,
+      };
+
+      await this.transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.error("Error enviando el correo electrónico:", error);
+    }
+  }
 }
 
 module.exports = EmailManager;

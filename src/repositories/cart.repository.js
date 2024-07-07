@@ -144,7 +144,6 @@ class CartRepository {
         userEmail
       );
 
-      // await this.deleteAllProducts(cid);
       cart.products = cart.products.filter((product) => {
         return !selledProducts.find(
           (soldProduct) => soldProduct._id.toString() == product._id.toString()

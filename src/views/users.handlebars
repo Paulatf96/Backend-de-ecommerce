@@ -2,12 +2,38 @@
 
 {{#each users}}
 <div class="card">
-    <p>Nombre:{{this.fullname}} </p>
+    <p>Nombre:{{this.first_name}} </p>
     <p>Correo: {{this.email}}</p>
     <p>Rol: {{this.rol}}</p>
     <p>Última conexión: {{this.lastConnection}} </p>
+    <button  onclick="changeRol('{{this.id}}')">Cambiar rol</button>
+    <button  onclick="deleteUser('{{this.id}}')">Eliminar usuario</button>
 </div>
 {{/each}}
 
 <a href="/current">Volver a perfil</a>
 
+<script type="text/javascript">
+
+async function changeRol(uid) {
+  const url = `premium/${uid}`
+  const response =  await fetch(url,{
+    method: "PUT",
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  const json= await response.json()
+}
+
+async function deleteUser(uid) {
+  const url = `delete/${uid}`
+  const response =  await fetch(url,{
+    method: "DELETE",
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  const json= await response.json()
+}
+</script>

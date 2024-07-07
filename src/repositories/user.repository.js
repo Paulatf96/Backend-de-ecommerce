@@ -51,13 +51,14 @@ class UserRepository {
         cart: cart._id,
         lastConnection: new Date(),
       };
-      await UserModel.create(newUser);
-      const userDto = UserDTO(
-        first_name,
-        last_name,
-        email,
-        rol,
-        lastConnection
+      const createdUser = await UserModel.create(newUser);
+      const userDto = new UserDTO(
+        createdUser.first_name,
+        createdUser.last_name,
+        createdUser.email,
+        createdUser.rol,
+        createdUser.lastConnection,
+        createdUser._id
       );
       return userDto;
     } catch (error) {
@@ -75,7 +76,7 @@ class UserRepository {
     }
   }
 
-  async deleteUsers() {
+  async deleteInactiveUsers() {
     try {
       const users = await UserModel.find();
       const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000); // Hace 2 días desde ahora
@@ -83,13 +84,23 @@ class UserRepository {
       const inactiveUsers = users.filter(
         (user) => new Date(user.lastConnection) < twoDaysAgo
       );
-      console.log(inactiveUsers);
-
       for (const user of inactiveUsers) {
         await UserModel.findByIdAndDelete(user._id);
       }
 
       return inactiveUsers;
+    } catch (error) {
+      throw new Error("Error del servidor", error);
+    }
+  }
+
+  async delete(uid) {
+    try {
+      const deletedUser = await UserModel.findByIdAndDelete(uid);
+      if (!deletedUser) {
+        throw new Error("No pudimos encontrar el usuario");
+      }
+      return deletedUser;
     } catch (error) {
       throw new Error("Error del servidor", error);
     }

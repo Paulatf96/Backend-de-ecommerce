@@ -50,7 +50,8 @@ class UserController {
       req.user.last_name,
       req.user.rol,
       req.user.email,
-      req.user.lastConnecction
+      req.user.lastConnecction,
+      req.user._id
     );
 
     const isAdmin = req.user.rol == "admin";
@@ -154,7 +155,8 @@ class UserController {
             user.last_name,
             user.rol,
             user.email,
-            user.lastConnection
+            user.lastConnection,
+            user._id
           )
       );
       res.render("users", { users: userDTOs });
@@ -163,13 +165,30 @@ class UserController {
     }
   }
 
-  async deleteUsers(req, res) {
+  async deleteInactiveUsers(req, res) {
     try {
-      const users = await userRepository.deleteUsers();
+      const users = await userRepository.deleteInactiveUsers();
       if (!users) {
         return res.status(404).send("Sin usuarios");
       }
+
+      for (const user of users) {
+        await emailManager.sendEmailInactiveAccount(
+          user.email,
+          user.first_name
+        );
+      }
       res.json(users);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  }
+
+  async delete(req, res) {
+    const { uid } = req.params;
+    try {
+      const deletedUser = await userRepository.delete(uid);
+      res.json(deletedUser);
     } catch (error) {
       res.status(500).send(error);
     }

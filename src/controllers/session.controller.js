@@ -10,6 +10,7 @@ class SessionController {
         email: req.user.email,
         rol: req.user.rol,
         cart: req.user.cart,
+        id: req.user.id,
       };
       req.session.login = true;
       req.logger.info(
