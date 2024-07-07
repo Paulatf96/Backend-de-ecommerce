@@ -1,13 +1,59 @@
 <h1>Carrito</h1>
 
-<div id="cartContainer">
+<div class="cartContainer" id="{{cid}}">
+
   {{#each products}}
     <div class="card">
+      
       <p>Producto: {{this.product.title}}</p>
       <p>Precio: {{this.product.price}}</p>
       <p>Descripción: {{this.product.description}}</p>
       <p>Código: {{this.product.code}}</p>
       <p>Cantidad: {{this.quantity}}</p>
+      <button  onclick="deleteProduct('{{this.product._id}}')">Eliminar producto</button>
     </div>
   {{/each}}
 </div>
+
+<button onclick="purchase()">COmprar aqui</button>
+      <form action="`api/cart/purchase/{{cid}}`" method="POST">
+        <button class="btnMios" type="submit">Comprar</button>
+    </form>
+
+<script type="text/javascript">
+const cart = document.getElementsByClassName("cartContainer")
+const cid= cart[0].id
+
+async function deleteProduct(pid) {
+  const url = `/api/cart/${cid}/products/${pid}`
+  const response =  await fetch(url,{
+    method: "DELETE",
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  const json= await response.json()
+  alert("Producto eliminado con éxito")
+  location.reload()
+}
+
+async function purchase(){
+  const url = `/api/cart/purchase/${cid}`
+  console.log(url)
+  const response =  await fetch(url,{
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  if (response.ok) {
+    const data = await response.json();
+    if (data.redirectUrl) {
+      window.location.href = data.redirectUrl;
+    }
+  } else {
+    console.error('Error en la compra');
+  }
+}
+
+</script>

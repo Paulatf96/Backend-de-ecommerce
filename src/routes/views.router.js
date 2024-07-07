@@ -58,4 +58,11 @@ router.get(
   "/confirmationPassword",
   viewController.renderView.bind(viewController)
 );
+
+router.get("/success", (req, res) => {
+  const { resultCart } = req.query;
+  console.log(resultCart);
+  res.render("success");
+});
+
 module.exports = router;

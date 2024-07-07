@@ -44,7 +44,6 @@ class UserController {
     }
   }
   async profile(req, res) {
-    console.log(req.user);
     const userDto = new UserDTO(
       req.user.first_name,
       req.user.last_name,

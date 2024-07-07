@@ -71,7 +71,7 @@ class CartController {
     let pid = req.params.pid;
     try {
       const cart = await cartRepository.deleteProduct(cid, pid);
-      res.status(200).json({ message: "Producto eliminado con éxito" }, cart);
+      return res.status(200).json({ cart });
     } catch (error) {
       req.logger.error("Error al eliminar el producto", error);
       res.status(500).json({ error: "Error del servidor" });
@@ -104,10 +104,13 @@ class CartController {
 
   async purchase(req, res) {
     let cid = req.params.cid;
-    let userEmail = "paulat@trujillo.com";
+    let userEmail = req.user.email;
     try {
       const resultCart = await cartRepository.purchase(cid, userEmail);
-      res.json(resultCart);
+      res.json({
+        redirectUrl: "/success",
+        data: { resultCart },
+      });
     } catch (error) {
       req.logger.error("Error al finalizar la compra", error);
       res.status(500).json({ error: "Error del servidor" });

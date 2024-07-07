@@ -55,9 +55,9 @@ class CartRepository {
   async deleteProduct(cid, pid) {
     try {
       const cart = await this.getCartById(cid);
-      const existingProductIndex = cart.products.findIndex(
-        (product) => product.product == pid
-      );
+      const existingProductIndex = cart.products.findIndex((product) => {
+        return product.product._id.toString() == pid.toString();
+      });
       if (existingProductIndex === -1) {
         throw new Error("No pudimos encontrar el producto");
       }

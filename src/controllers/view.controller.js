@@ -38,12 +38,14 @@ class ViewController {
     try {
       const cid = req.params.cid;
       const cart = await cartRepository.getCartById(cid);
+
       const cartArray = cart.products.map((producto) => {
         const { _id, ...rest } = producto.toObject();
         return rest;
       });
       res.render("carts", {
         products: cartArray,
+        cid: cid,
       });
     } catch (error) {
       req.logger.error("Ha ocurrido un error visualizando el carrito", error);
