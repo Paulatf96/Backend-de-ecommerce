@@ -1,59 +1,106 @@
-<h1>Carrito</h1>
+<head>
+      <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
 
-<div class="cartContainer" id="{{cid}}">
+        .container-cart {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
 
-  {{#each products}}
-    <div class="card">
-      
-      <p>Producto: {{this.product.title}}</p>
-      <p>Precio: {{this.product.price}}</p>
-      <p>Descripción: {{this.product.description}}</p>
-      <p>Código: {{this.product.code}}</p>
-      <p>Cantidad: {{this.quantity}}</p>
-      <button  onclick="deleteProduct('{{this.product._id}}')">Eliminar producto</button>
-    </div>
-  {{/each}}
-</div>
+        .container-cart h1 {
+            text-align: center;
+            color: #1e90ff;
+        }
 
-<button onclick="purchase()">COmprar aqui</button>
-      <form action="`api/cart/purchase/{{cid}}`" method="POST">
-        <button class="btnMios" type="submit">Comprar</button>
+        .cartContainer {
+            margin-top: 20px;
+        }
+
+        .card-cart {
+            background-color: #f0f8ff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-cart p {
+            margin: 5px 0;
+        }
+
+        .card-cart button {
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .card-cart button:hover {
+            background-color: #1c86ee;
+        }
+
+        .btn-purchase {
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-purchase:hover {
+            background-color: #1c86ee;
+        }
+    </style>
+</head>
+<div class="container-cart"><h1>Carrito</h1>
+
+  <div class="cartContainer" id="{{cid}}">
+
+    {{#each products}}
+      <div class="card-cart">      
+        <p>Producto: {{this.product.title}}</p>
+        <p>Precio: {{this.product.price}}</p>
+        <p>Descripción: {{this.product.description}}</p>
+        <p>Código: {{this.product.code}}</p>
+        <p>Cantidad: {{this.quantity}}</p>
+        <button  onclick="deleteProduct('{{this.product._id}}')">Eliminar producto</button>
+      </div>
+    {{/each}}
+  </div>
+    <form action="/api/cart/purchase/{{cid}}" method="POST">
+      <button class="btn-purchase" type="submit">Comprar</button>
     </form>
 
+</div>
+
 <script type="text/javascript">
-const cart = document.getElementsByClassName("cartContainer")
-const cid= cart[0].id
+  const cart = document.getElementsByClassName("cartContainer")
+  const cid= cart[0].id
 
-async function deleteProduct(pid) {
-  const url = `/api/cart/${cid}/products/${pid}`
-  const response =  await fetch(url,{
-    method: "DELETE",
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  const json= await response.json()
-  alert("Producto eliminado con éxito")
-  location.reload()
-}
-
-async function purchase(){
-  const url = `/api/cart/purchase/${cid}`
-  console.log(url)
-  const response =  await fetch(url,{
-    method: "POST",
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  if (response.ok) {
-    const data = await response.json();
-    if (data.redirectUrl) {
-      window.location.href = data.redirectUrl;
-    }
-  } else {
-    console.error('Error en la compra');
+  async function deleteProduct(pid) {
+    const url = `/api/cart/${cid}/products/${pid}`
+    const response =  await fetch(url,{
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const json= await response.json()
+    alert("Producto eliminado con éxito")
+    location.reload()
   }
-}
-
 </script>

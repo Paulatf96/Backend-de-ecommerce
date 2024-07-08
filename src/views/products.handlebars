@@ -1,34 +1,34 @@
-<h1>Vista Products</h1>
+<div class="container-products">
+    <h1>Vista Products</h1>
 
     <form action="/carts/{{cartId}}" method="GET">
         <button class="btnMios" type="submit">Ir al Carrito</button>
     </form>
 
-<div id="productsContainer">
-{{#each products.payload}}
-<div class="card">
-    <p>Producto:{{this.title}} </p>
-    <p>Precio: {{this.price}}</p>
-    <p>Descripción: {{this.description}}</p>
-    <p>Código: {{this.code}} </p>
-    <form action="/api/cart/{{../cartId}}/products/{{this.id}}" method="POST">
-        <button class="btnMios" type="submit">Agregar al Carrito</button>
-    </form>
-   
+    <div id="productsContainer" class="products-grid">
+        {{#each products.payload}}
+        <div class="card-product">
+            <p>Producto:{{this.title}} </p>
+            <p>Precio: {{this.price}}</p>
+            <p>Descripción: {{this.description}}</p>
+            <p>Código: {{this.code}} </p>
+            <form action="/api/cart/{{../cartId}}/products/{{this.id}}" method="POST">
+                <button class="btnMios" type="submit">Agregar al Carrito</button>
+            </form>
+        </div>
+        {{/each}}
+    </div>
+
+    <div class="pagination">
+        {{#if products.hasPrevPage}}
+        <a href="/userProducst?page={{products.prevPage}}"> Anterior </a>
+        {{/if}}
+
+        {{#if products.hasNextPage}}
+        <a href="/userProducst?page={{products.nextPage}}"> Siguiente </a>
+        {{/if}}
+    </div>
+
+    <p>Página {{products.page}} de {{products.totalPages}} </p>
+
 </div>
-
-
-{{/each}}
-
-</div>
-<div>
-{{#if products.hasPrevPage}}
-    <a href="/userProducst?page={{products.prevPage}}"> Anterior </a>
-{{/if}}
-
-{{#if products.hasNextPage}}
-    <a href="/userProducst?page={{products.nextPage}}"> Siguiente </a>
-{{/if}}
-</div>
-
-<p>Pagina {{products.page}} de {{products.totalPages}} </p>

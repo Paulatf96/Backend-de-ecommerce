@@ -12,15 +12,15 @@ class EmailManager {
     });
   }
 
-  async sendEmailPurchase(email, first_name, ticket) {
+  async sendEmailPurchase(email, ticket) {
     try {
       const mailOptions = {
         from: "Atenea Ecommerce <paula.tf96@gmail.com>",
         to: email,
         subject: "Confirmación de compra",
         html: `<h1>Confirmación de compra</h1>
-                        <p>Gracias por tu compra, ${first_name}!</p>
-                        <p>El ID de su orden es: ${ticket}!</p>`,
+                        <p>Gracias por tu compra!</p>
+                        <p>El ID de tu orden es: ${ticket}!</p>`,
       };
 
       await this.transporter.sendMail(mailOptions);

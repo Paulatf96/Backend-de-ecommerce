@@ -1,17 +1,19 @@
 
-<h1>Mi Perfil</h1>
-<p>Bienvenido!, {{user.fullname}}!</p>
-<p>Rol: {{user.rol}}</p>
-<a href="/api/sessions/logout">Cerrar sesión </a>
+<div class="container">
+	<h1>Mi Perfil</h1>
+	<p>Bienvenido!, {{user.fullname}}!</p>
+	<p>Rol: {{user.rol}}</p>
+	<a href="/api/sessions/logout">Cerrar sesión </a>
 
 
-  {{#if this.isAdmin}}
-	<a href="/realtimeproducts">Modificar Productos</a>
-	<a href="/api/users/all-users">Ver usuarios registrados</a>
+	{{#if this.isAdmin}}
+		<a href="/realtimeproducts">Modificar Productos</a>
+		<a href="/api/users/all-users">Ver usuarios registrados</a>
 	{{else}}
-	{{#if this.isPremium}}
-	<a href="/realtimeproducts">Panel Premium</a>
+		{{#if this.isPremium}}
+		<a href="/realtimeproducts">Panel Premium</a>
+		{{/if}}
+		<a  href="/chatOnline">Chat en vivo</a>
+		<a  href="/products">Tienda</a>
 	{{/if}}
-   <a  href="/chatOnline">Chat en vivo</a>
-    <a  href="/products">Tienda</a>
-  {{/if}}
+  </div>

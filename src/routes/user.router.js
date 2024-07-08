@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
-const { authAdmin } = require("../middleware/authentication.middleware.js");
+const {
+  authAdmin,
+  isLogued,
+} = require("../middleware/authentication.middleware.js");
 
 const UserController = require("../controllers/user.controller");
 const userController = new UserController();
@@ -32,6 +35,7 @@ router.put(
 
 router.get(
   "/all-users",
+  isLogued,
   authAdmin,
   userController.getUsers.bind(userController)
 );

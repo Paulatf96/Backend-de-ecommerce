@@ -2,6 +2,8 @@ const CartRepository = require("../repositories/cart.repository.js");
 const cartRepository = new CartRepository();
 const ProductRepository = require("../repositories/product.repository.js");
 const productRepository = new ProductRepository();
+const EmailManager = require("../services/email.js");
+const emailManager = new EmailManager();
 const UserDTO = require("../dto/user.dto.js");
 
 class CartController {
@@ -107,10 +109,14 @@ class CartController {
     let userEmail = req.user.email;
     try {
       const resultCart = await cartRepository.purchase(cid, userEmail);
-      res.json({
-        redirectUrl: "/success",
-        data: { resultCart },
-      });
+      const plainTicket = {
+        code: resultCart.ticket.code,
+        amount: resultCart.ticket.amount,
+        purchaser: resultCart.ticket.purchaser,
+        purchase_datetime: resultCart.ticket.purchase_datetime.toISOString(),
+      };
+      await emailManager.sendEmailPurchase(userEmail, plainTicket.code);
+      res.render("success", { ticket: plainTicket });
     } catch (error) {
       req.logger.error("Error al finalizar la compra", error);
       res.status(500).json({ error: "Error del servidor" });

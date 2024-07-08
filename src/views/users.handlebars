@@ -1,39 +1,98 @@
-<h1> Usuarios E-commerce</h1>
+<head><style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
 
-{{#each users}}
-<div class="card">
-    <p>Nombre:{{this.first_name}} </p>
-    <p>Correo: {{this.email}}</p>
-    <p>Rol: {{this.rol}}</p>
-    <p>Última conexión: {{this.lastConnection}} </p>
-    <button  onclick="changeRol('{{this.id}}')">Cambiar rol</button>
-    <button  onclick="deleteUser('{{this.id}}')">Eliminar usuario</button>
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .container h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card p {
+            margin: 5px 0;
+        }
+
+        .card button {
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin-right: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .card button:hover {
+            background-color: #1c86ee;
+        }
+
+        .container a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #1e90ff;
+        }
+    </style></head>
+<div class="container">
+  <h1> Usuarios E-commerce</h1>
+
+  {{#each users}}
+  <div class="card">
+      <p>Nombre:{{this.first_name}} </p>
+      <p>Correo: {{this.email}}</p>
+      <p>Rol: {{this.rol}}</p>
+      <p>Última conexión: {{this.lastConnection}} </p>
+      <button  onclick="changeRol('{{this.id}}')">Cambiar rol</button>
+      <button  onclick="deleteUser('{{this.id}}')">Eliminar usuario</button>
+  </div>
+  {{/each}}
+
+  <a href="/current">Volver a perfil</a>
 </div>
-{{/each}}
-
-<a href="/current">Volver a perfil</a>
 
 <script type="text/javascript">
+  async function changeRol(uid) {
+    const url = `premium/${uid}`
+    const response =  await fetch(url,{
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const json= await response.json()
+  }
 
-async function changeRol(uid) {
-  const url = `premium/${uid}`
-  const response =  await fetch(url,{
-    method: "PUT",
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  const json= await response.json()
-}
-
-async function deleteUser(uid) {
-  const url = `delete/${uid}`
-  const response =  await fetch(url,{
-    method: "DELETE",
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  const json= await response.json()
-}
+  async function deleteUser(uid) {
+    const url = `delete/${uid}`
+    const response =  await fetch(url,{
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const json= await response.json()
+  }
 </script>
