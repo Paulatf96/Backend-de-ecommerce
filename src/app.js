@@ -53,7 +53,7 @@ app.use(passport.session());
 //Configuración handlebars
 app.engine("handlebars", exphbs.engine());
 app.set("view engine", "handlebars");
-app.set("views", path.join(__dirname, "src/views"));
+app.set("views", "./src/views");
 
 //Rutas
 app.use("/api/cart", cartRouter);
