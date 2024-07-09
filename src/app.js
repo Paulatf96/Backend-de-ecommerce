@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const initializePassport = require("./config/passport.config.js");
 const cors = require("cors");
+
 const swaggerJsdoc = require("swagger-jsdoc");
 
 const swaggerUi = require("swagger-ui-express");
@@ -24,7 +25,7 @@ require("./database.js");
 const swaggerOptions = require("./config/swagger.config.js");
 
 const app = express();
-
+app.use(cors());
 //Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -42,7 +43,7 @@ app.use(
     }),
   })
 );
-app.use(cors());
+
 app.use(addLogger);
 //Configuración passport
 initializePassport();
