@@ -14,7 +14,7 @@ const {
 } = require("../middleware/authentication.middleware.js");
 
 router.get(
-  "/realtimeproducts",
+  "/realTimeProducts",
   [isLogued],
   viewController.renderView.bind(viewController)
 );
