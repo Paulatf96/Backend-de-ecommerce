@@ -15,15 +15,13 @@ router.post(
   sessionController.createSession.bind(sessionController)
 );
 
-
 router.get("/faillogin", sessionController.failLogin.bind(sessionController));
 
 router.get("/logout", sessionController.logout.bind(sessionController));
 
 router.get(
   "/github",
-  passport.authenticate("github", { scope: ["user:email"] }),
-  async (req, res) => {}
+  passport.authenticate("github", { scope: ["user:email"] })
 );
 
 router.get(
